@@ -1,0 +1,12 @@
+{
+  "hero": {
+    "welcome_title": "Kết nối tài năng với cơ hội nghề nghiệp",
+    "welcome_desc": "Nền tảng tuyển dụng chuyên nghiệp giúp ứng viên tìm được công việc mơ ước và nhà tuyển dụng tiếp cận nhân tài phù hợp.",
+    "find_job": "Tìm việc làm",
+    "post_job": "Đăng tin tuyển dụng"
+  },
+  "metadata": {
+    "title": "JobPortal — Nền tảng tuyển dụng chuyên nghiệp",
+    "description": "Kết nối ứng viên và nhà tuyển dụng. Tìm kiếm việc làm, đăng tin tuyển dụng dễ dàng và hiệu quả."
+  }
+}

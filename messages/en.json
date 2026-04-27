@@ -1,0 +1,12 @@
+{
+  "hero": {
+    "welcome_title": "Connect talent with career opportunities",
+    "welcome_desc": "A professional recruitment platform that helps candidates find their dream jobs and employers reach the right talent.",
+    "find_job": "Find jobs",
+    "post_job": "Post a job"
+  },
+  "metadata": {
+    "title": "JobPortal — Professional Recruitment Platform",
+    "description": "Connecting candidates and employers. Search for jobs, post vacancies easily and efficiently."
+  }
+}
