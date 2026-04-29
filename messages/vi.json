@@ -8,5 +8,70 @@
   "metadata": {
     "title": "JobPortal — Nền tảng tuyển dụng chuyên nghiệp",
     "description": "Kết nối ứng viên và nhà tuyển dụng. Tìm kiếm việc làm, đăng tin tuyển dụng dễ dàng và hiệu quả."
+  },
+  "navigation": {
+    "find_job": "Tìm việc làm",
+    "companies": "Công ty",
+    "guide": "Cẩm nang",
+    "about_us": "Về chúng tôi"
+  },
+  "footer": {
+    "company_desc": "Nền tảng tuyển dụng chuyên nghiệp giúp kết nối nhân tài với các doanh nghiệp hàng đầu.",
+    "categories": "Danh mục",
+    "it_jobs": "Việc làm IT",
+    "marketing_jobs": "Việc làm Marketing",
+    "design_jobs": "Việc làm Thiết kế",
+    "sales_jobs": "Việc làm Kinh doanh",
+    "support": "Hỗ trợ",
+    "terms": "Điều khoản sử dụng",
+    "privacy": "Chính sách bảo mật",
+    "faq": "Câu hỏi thường gặp",
+    "contact": "Liên hệ",
+    "connect": "Kết nối",
+    "newsletter_desc": "Đăng ký để nhận tin tuyển dụng mới nhất."
+  },
+  "auth": {
+    "login": "Đăng nhập",
+    "logout": "Đăng xuất",
+    "post_job": "Đăng tin tuyển dụng",
+    "admin_dashboard": "Trang quản trị",
+    "login_page": {
+      "title": "Đăng nhập",
+      "subtitle": "Chào mừng trở lại! Vui lòng đăng nhập vào tài khoản của bạn.",
+      "email_label": "Email",
+      "email_placeholder": "Nhập địa chỉ email...",
+      "password_label": "Mật khẩu",
+      "password_placeholder": "Nhập mật khẩu...",
+      "submit_button": "Đăng nhập",
+      "loading": "Đang đăng nhập...",
+      "no_account": "Chưa có tài khoản?",
+      "register_link": "Đăng ký ngay"
+    },
+    "register_page": {
+      "title": "Đăng ký",
+      "subtitle": "Tạo tài khoản mới để bắt đầu.",
+      "email_label": "Email",
+      "email_placeholder": "Nhập địa chỉ email...",
+      "password_label": "Mật khẩu",
+      "password_placeholder": "Tạo mật khẩu (tối thiểu 6 ký tự)",
+      "role_label": "Bạn là:",
+      "role_candidate": "Ứng viên tìm việc",
+      "role_employer": "Nhà tuyển dụng",
+      "submit_button": "Đăng ký",
+      "loading": "Đang đăng ký...",
+      "has_account": "Đã có tài khoản?",
+      "login_link": "Đăng nhập ngay"
+    },
+    "validation": {
+      "invalid_email": "Email không hợp lệ.",
+      "password_too_short": "Mật khẩu phải có ít nhất 6 ký tự.",
+      "invalid_role": "Vui lòng chọn vai trò hợp lệ."
+    }
+  },
+  "common": {
+    "language_vi": "Tiếng Việt",
+    "language_en": "English",
+    "language_switch": "Tiếng Việt / English",
+    "copyright": "© {year} JobPortal. Đã đăng ký bản quyền."
   }
 }

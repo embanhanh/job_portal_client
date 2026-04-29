@@ -60,29 +60,25 @@ Dự án đã sẵn sàng cho Phase 2: Multi-Role Architecture.
 
 ---
 
-## Recent Changes (Phase 1)
-- Cài đặt toàn bộ production + dev dependencies
-- Di chuyển `app/` → `src/app/`
-- Cập nhật tsconfig paths: `@/*` → `./src/*`
-- Khởi tạo shadcn/ui (base-nova, Tailwind 4 compatible)
-- Cài shadcn components: button, input, card, badge, dialog, dropdown-menu
-- Tạo `globals.css` với Professional design tokens (oklch)
-- Tạo Craft layout system: `Main`, `Section`, `Container`, `Grid`
-- Tạo i18n: `routing.ts`, `request.ts`, `middleware.ts`
-- Tạo messages: `vi.json`, `en.json`
-- Tạo `[locale]/layout.tsx` (Poppins + IBM Plex Mono + NextIntlClientProvider)
-- Tạo `[locale]/page.tsx` (Hero Section)
-- Bật React Compiler trong `next.config.ts`
-- Tạo `README.md`
+## Recent Changes (Phase 3 - API Layer)
+- Cài đặt `axios` client với cấu hình chuẩn.
+- Tách Endpoint constants theo domain vào `src/lib/api/endpoints`.
+- Setup API Interceptor hỗ trợ tự động inject `accessToken` và Refresh Token Flow với request queue.
+- Áp dụng pattern Service Layer gọi api độc lập khỏi UI.
+- Tích hợp `react-query` làm source of truth cho Auth state (`useMe`).
+- Sử dụng `zustand` chỉ cho `accessToken`.
+- Bọc toàn bộ app với `QueryClientProvider`.
+- Refactor `ClientHeaderActions` để dùng `useMe` (thay vì mock).
 
 ---
 
 ## Architecture Decisions
 
-- **Root Layout** (`src/app/layout.tsx`): Pass-through — chỉ import globals.css. Locale layout chịu trách nhiệm `<html>` và `<body>` để động hoá `lang` attribute.
+- **Root Layout** (`src/app/layout.tsx`): Pass-through — chỉ import globals.css. Locale layout chịu trách nhiệm `<html>` và `<body>` để động hoá `lang` attribute. Bọc app với `QueryClientProvider`.
+- **Auth State Source of Truth**: Backend session `/auth/me` thông qua React Query là source of truth duy nhất.
 - **Dark Mode**: Dùng `.dark` class toggle (shadcn default), không dùng `prefers-color-scheme` media query.
 - **Color Space**: oklch (shadcn 4 default) — mọi màu HEX trong tokens cần convert sang oklch.
-- **Middleware deprecation**: Next.js 16 deprecated `middleware.ts` → `proxy.ts` nhưng next-intl 4.x vẫn dùng `middleware.ts`. Hoạt động bình thường, chờ next-intl cập nhật.
+- **Role Guard Frontend**: Client Components (`ClientHeaderActions.tsx`) lấy Role từ `useMe()` (React Query) để render UI tương ứng.
 
 ---
 
@@ -92,19 +88,18 @@ Dự án đã sẵn sàng cho Phase 2: Multi-Role Architecture.
 |------|----------|
 | `src/app/globals.css` | Toàn bộ design tokens, shadcn variables, dark mode |
 | `src/components/craft/index.tsx` | Semantic layout system |
-| `src/i18n/routing.ts` | Locale config |
-| `src/i18n/request.ts` | Server message loader |
-| `src/middleware.ts` | i18n routing middleware |
-| `messages/vi.json` | Vietnamese translations |
-| `messages/en.json` | English translations |
-| `next.config.ts` | React Compiler + next-intl plugin |
-| `components.json` | shadcn/ui config |
+| `src/components/shared/ClientHeaderActions.tsx` | Nút đăng nhập/điều hướng dựa trên Role (useMe) |
+| `src/lib/api/interceptor.ts` | Xử lý Refresh Token Flow và đính kèm Bearer token |
+| `src/features/auth/hooks/useMe.ts` | Hook lấy dữ liệu user hiện tại (Source of truth) |
+| `src/providers/query-provider.tsx` | React Query provider wrapper |
 
 ---
 
-## Next Steps (Phase 2)
-1. Tạo route groups: `(candidate)`, `(employer)`, `(admin)` trong `src/app/[locale]/`
-2. Tạo layouts riêng cho từng role (Top Nav / Sidebar / Dashboard)
-3. Implement auth feature module (`src/features/auth/`)
-4. Thiết kế Navigation components
-5. Tạo `error.tsx` cho từng route group
+## Next Steps (Phase 3)
+1. Tạo các route groups còn lại: `(candidate)`, `(employer)`, `(admin)` trong `src/app/[locale]/`.
+2. Tạo layouts riêng cho từng role (Top Nav / Sidebar / Dashboard).
+3. ~Implement Login/Register page UI và tích hợp `useLogin` hook.~ (Đã hoàn thành)
+4. ~Xử lý middleware để role-gating bảo vệ routes an toàn dựa vào token.~ (Đã hoàn thành)
+5. Tạo Pages sử dụng LoginForm/RegisterForm.
+6. Cập nhật components navigation dựa theo auth state thật.
+

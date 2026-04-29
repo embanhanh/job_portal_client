@@ -4,6 +4,7 @@ import { getMessages, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { Poppins, IBM_Plex_Mono } from "next/font/google";
 import { routing } from "@/i18n/routing";
+import Providers from "@/providers/query-provider";
 
 /* ─── Fonts (Professional Skill: Poppins + IBM Plex Mono) ─── */
 const poppins = Poppins({
@@ -63,9 +64,11 @@ export default async function LocaleLayout({
       suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col bg-background text-foreground">
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          {children}
-        </NextIntlClientProvider>
+        <Providers>
+          <NextIntlClientProvider locale={locale} messages={messages}>
+            {children}
+          </NextIntlClientProvider>
+        </Providers>
       </body>
     </html>
   );

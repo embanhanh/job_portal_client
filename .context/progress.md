@@ -62,6 +62,12 @@
 ## 🔲 Pending
 
 ### Phase 2: Multi-Role Architecture
+- [x] Route group `(public)` — `src/app/[locale]/(public)/`
+  - [x] `layout.tsx` — Global Header (Sticky & Smart), Footer (Multi-column)
+  - [x] `Header.tsx`, `ClientHeaderActions.tsx`, `MobileMenu.tsx`, `Footer.tsx`
+  - [x] `QuickSearch.tsx` — Tích hợp giữa Header
+  - [x] `template.tsx` — Page transitions (Fade + Slide)
+  - [x] Type checking & Lucide icon fallbacks fixed ✅
 - [ ] Route group `(candidate)` — `src/app/[locale]/(candidate)/`
   - [ ] `layout.tsx` — Top Navigation, radius override 0.75rem
   - [ ] `error.tsx`
@@ -71,19 +77,22 @@
 - [ ] Route group `(admin)` — `src/app/[locale]/(admin)/`
   - [ ] `layout.tsx` — Minimal Dashboard
   - [ ] `error.tsx`
-- [ ] Auth middleware (role-gating, kiểm tra `user.role`)
+- [x] Auth middleware (role-gating, kiểm tra `user.role` qua cookie)
 
 ### Phase 3: Feature Modules
-- [ ] **Auth** (`src/features/auth/`)
-  - [ ] Login page + Server Action (zod validation)
-  - [ ] Register page + Server Action
+- [x] **API Layer & Architecture Core**
+  - [x] Axios Client & Interceptors (Token + Refresh Flow)
+  - [x] React Query Provider + `useMe` làm Source of Truth cho Auth
+  - [x] Service Layer cho `auth`, `job`, `user`
+  - [x] Zustand store cho Access Token
+- [x] **Auth** (`src/features/auth/`)
+  - [x] Login page + Client Form (zod validation, React Query)
+  - [x] Register page + Client Form (zod validation, React Query)
   - [ ] Forgot password
-  - [ ] Zustand auth store
 - [ ] **Jobs** (`src/features/jobs/`)
   - [ ] Job listing (PPR enabled)
   - [ ] Job detail
   - [ ] Search & Filter
-  - [ ] TanStack Query hooks
 - [ ] **Candidate** (`src/features/candidate/`)
   - [ ] Profile page
   - [ ] Applications list (useOptimistic)

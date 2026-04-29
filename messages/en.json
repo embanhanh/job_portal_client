@@ -8,5 +8,70 @@
   "metadata": {
     "title": "JobPortal — Professional Recruitment Platform",
     "description": "Connecting candidates and employers. Search for jobs, post vacancies easily and efficiently."
+  },
+  "navigation": {
+    "find_job": "Find Jobs",
+    "companies": "Companies",
+    "guide": "Career Guide",
+    "about_us": "About Us"
+  },
+  "footer": {
+    "company_desc": "Professional recruitment platform connecting talent with leading enterprises.",
+    "categories": "Categories",
+    "it_jobs": "IT Jobs",
+    "marketing_jobs": "Marketing Jobs",
+    "design_jobs": "Design Jobs",
+    "sales_jobs": "Sales Jobs",
+    "support": "Support",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "faq": "FAQ",
+    "contact": "Contact Us",
+    "connect": "Connect",
+    "newsletter_desc": "Subscribe to get the latest job postings."
+  },
+  "auth": {
+    "login": "Login",
+    "logout": "Logout",
+    "post_job": "Post a Job",
+    "admin_dashboard": "Admin Dashboard",
+    "login_page": {
+      "title": "Login",
+      "subtitle": "Welcome back! Please login to your account.",
+      "email_label": "Email",
+      "email_placeholder": "Enter your email address...",
+      "password_label": "Password",
+      "password_placeholder": "Enter your password...",
+      "submit_button": "Login",
+      "loading": "Logging in...",
+      "no_account": "Don't have an account?",
+      "register_link": "Register now"
+    },
+    "register_page": {
+      "title": "Register",
+      "subtitle": "Create a new account to get started.",
+      "email_label": "Email",
+      "email_placeholder": "Enter your email address...",
+      "password_label": "Password",
+      "password_placeholder": "Create a password (min 6 characters)",
+      "role_label": "I am a:",
+      "role_candidate": "Job Seeker",
+      "role_employer": "Employer",
+      "submit_button": "Register",
+      "loading": "Registering...",
+      "has_account": "Already have an account?",
+      "login_link": "Login now"
+    },
+    "validation": {
+      "invalid_email": "Invalid email address.",
+      "password_too_short": "Password must be at least 6 characters.",
+      "invalid_role": "Please select a valid role."
+    }
+  },
+  "common": {
+    "language_vi": "Tiếng Việt",
+    "language_en": "English",
+    "language_switch": "Tiếng Việt / English",
+    "copyright": "© {year} JobPortal. All rights reserved."
   }
 }
