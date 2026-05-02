@@ -35,7 +35,7 @@ export function RegisterForm() {
   const { mutate: registerUser, isPending } = useMutation({
     mutationFn: async (data: RegisterInput) => {
       const response = await authService.register(data);
-      return response.data;
+      return response;
     },
     onSuccess: (data) => {
       useAuthStore.getState().setAccessToken(data.accessToken);

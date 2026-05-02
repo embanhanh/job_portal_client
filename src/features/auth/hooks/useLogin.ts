@@ -10,7 +10,7 @@ export const useLogin = () => {
   return useMutation({
     mutationFn: async (credentials: LoginInput) => {
       const response = await authService.login(credentials);
-      return response.data;
+      return response;
     },
     onSuccess: (data) => {
       useAuthStore.getState().setAccessToken(data.accessToken);

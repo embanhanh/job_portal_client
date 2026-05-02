@@ -7,7 +7,7 @@ export const useMe = () => {
     queryKey: [AUTH_KEYS.ME_QUERY],
     queryFn: async () => {
       const response = await authService.me();
-      return response.data;
+      return response;
     },
     staleTime: 5 * 60 * 1000,
     retry: false,
