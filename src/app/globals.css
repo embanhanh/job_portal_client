@@ -111,8 +111,8 @@
   --chart-4: oklch(0.577 0.245 27.325);
   --chart-5: oklch(0.556 0 0);
 
-  /* Base radius */
-  --radius: 0.5rem;
+  /* Base radius (Set to 0px for sharp corners as per professional design) */
+  --radius: 0px;
 
   /* Sidebar */
   --sidebar: oklch(0.985 0 0);

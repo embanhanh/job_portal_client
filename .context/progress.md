@@ -39,8 +39,8 @@
 - [x] `messages/en.json` — same keys, English
 
 #### Pages & Layouts
-- [x] `src/app/layout.tsx` — Minimal root (pass-through, imports globals.css)
-- [x] `src/app/[locale]/layout.tsx` — Poppins + IBM Plex Mono fonts, NextIntlClientProvider, generateMetadata, generateStaticParams
+- [x] `src/app/[locale]/layout.tsx` — Root Layout duy nhất. Bao gồm: globals.css, fonts (Poppins + IBM Plex Mono), NextIntlClientProvider, Providers (React Query), <html> & <body> với động lang attribute.
+- [x] Xóa `src/app/layout.tsx` để tránh xung đột "Missing <html>/<body>" và hỗ trợ i18n tốt hơn.
 - [x] `src/app/[locale]/page.tsx` — Hero Section (Craft + shadcn Button + Lucide icons + stats)
 
 #### Documentation & Context
@@ -56,6 +56,8 @@
 - [x] `GET /vi` → 200, "Kết nối tài năng với cơ hội nghề nghiệp"
 - [x] `GET /en` → 200, "Connect talent with career opportunities"
 - [x] Auto-redirect `/` → `/vi` ✓
+
+- [x] Fixed: "Missing <html> and <body> tags" by consolidating into locale layout (2026-05-04).
 
 ---
 

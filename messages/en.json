@@ -43,6 +43,7 @@
       "password_label": "Password",
       "password_placeholder": "Enter your password...",
       "submit_button": "Login",
+      "forgot_password": "Forgot password?",
       "loading": "Logging in...",
       "no_account": "Don't have an account?",
       "register_link": "Register now"
@@ -61,6 +62,10 @@
       "loading": "Registering...",
       "has_account": "Already have an account?",
       "login_link": "Login now"
+    },
+    "marketing": {
+      "title": "Find the gold standard for your career.",
+      "description": "Join thousands of professionals securing premium roles at top-tier companies globally."
     },
     "validation": {
       "invalid_email": "Invalid email address.",

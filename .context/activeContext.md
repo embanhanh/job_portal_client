@@ -74,7 +74,7 @@ Dự án đã sẵn sàng cho Phase 2: Multi-Role Architecture.
 
 ## Architecture Decisions
 
-- **Root Layout** (`src/app/layout.tsx`): Pass-through — chỉ import globals.css. Locale layout chịu trách nhiệm `<html>` và `<body>` để động hoá `lang` attribute. Bọc app với `QueryClientProvider`.
+- **Root Layout** (`src/app/[locale]/layout.tsx`): Đóng vai trò là Root Layout thực sự cho toàn bộ ứng dụng. Chịu trách nhiệm render thẻ `<html>`, `<body>`, set động `lang` attribute, import `globals.css` và bọc app với các Providers (`QueryClientProvider`, `NextIntlClientProvider`). File `src/app/layout.tsx` đã bị xóa để tránh xung đột.
 - **Auth State Source of Truth**: Backend session `/auth/me` thông qua React Query là source of truth duy nhất.
 - **Dark Mode**: Dùng `.dark` class toggle (shadcn default), không dùng `prefers-color-scheme` media query.
 - **Color Space**: oklch (shadcn 4 default) — mọi màu HEX trong tokens cần convert sang oklch.
@@ -96,10 +96,10 @@ Dự án đã sẵn sàng cho Phase 2: Multi-Role Architecture.
 ---
 
 ## Next Steps (Phase 3)
-1. Tạo các route groups còn lại: `(candidate)`, `(employer)`, `(admin)` trong `src/app/[locale]/`.
+1. Tạo các route groups còn lại: `(public)`, `(candidate)`, `(employer)`, `(admin)` trong `src/app/[locale]/`.
 2. Tạo layouts riêng cho từng role (Top Nav / Sidebar / Dashboard).
-3. ~Implement Login/Register page UI và tích hợp `useLogin` hook.~ (Đã hoàn thành)
+3. ~Implement Login/Register page UI và tích hợp `useLogin` hook.~ (Đã hoàn thành ở Public Route)
 4. ~Xử lý middleware để role-gating bảo vệ routes an toàn dựa vào token.~ (Đã hoàn thành)
-5. Tạo Pages sử dụng LoginForm/RegisterForm.
+5. Tạo RegisterForm và trang Register.
 6. Cập nhật components navigation dựa theo auth state thật.
 

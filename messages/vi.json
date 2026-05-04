@@ -43,6 +43,7 @@
       "password_label": "Mật khẩu",
       "password_placeholder": "Nhập mật khẩu...",
       "submit_button": "Đăng nhập",
+      "forgot_password": "Quên mật khẩu?",
       "loading": "Đang đăng nhập...",
       "no_account": "Chưa có tài khoản?",
       "register_link": "Đăng ký ngay"
@@ -61,6 +62,10 @@
       "loading": "Đang đăng ký...",
       "has_account": "Đã có tài khoản?",
       "login_link": "Đăng nhập ngay"
+    },
+    "marketing": {
+      "title": "Khởi tạo tiêu chuẩn vàng cho sự nghiệp của bạn.",
+      "description": "Tham gia cùng hàng ngàn chuyên gia đang nắm giữ các vị trí cao cấp tại những công ty hàng đầu toàn cầu."
     },
     "validation": {
       "invalid_email": "Email không hợp lệ.",
