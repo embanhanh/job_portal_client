@@ -3,11 +3,17 @@ import { Role } from "../enums/auth.enum";
 export interface User {
   id: string;
   email: string;
+  fullName: string;
   role: Role;
-  name: string;
   avatar?: string;
+  phone?: string;
+  status?: string;
 }
 
+/**
+ * Response từ POST /auth/login và POST /auth/register.
+ * BE set token qua HTTP-only cookie — response body chỉ chứa message.
+ */
 export interface AuthResponse {
-  accessToken: string;
+  message: string;
 }

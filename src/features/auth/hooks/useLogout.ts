@@ -1,33 +1,30 @@
-import { useQueryClient } from "@tanstack/react-query";
-import { useAuthStore } from "@/features/auth/model/auth.store";
-import { AUTH_KEYS } from "@/features/auth/constants/auth.constant";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { useLocale } from "next-intl";
+import { authService } from "@/services/auth/auth.service";
 
+/**
+ * Hook đăng xuất.
+ * Gọi POST /auth/logout để BE clear HTTP-only cookie,
+ * sau đó clear toàn bộ React Query cache và redirect về login.
+ */
 export const useLogout = () => {
   const queryClient = useQueryClient();
+  const router = useRouter();
+  const locale = useLocale();
 
-  const logout = () => {
-    console.log("[Logout] Đang thực hiện xóa session...");
-    
-    // 1. Clear Zustand Store
-    useAuthStore.getState().clearAuth();
-    
-    // 2. Clear Cookies
-    if (typeof document !== "undefined") {
-      document.cookie = `${AUTH_KEYS.ACCESS_TOKEN_COOKIE}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
-      document.cookie = `user_role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
-      console.log("[Logout] Đã xóa Access Token và User Role khỏi Cookie");
-    }
+  const { mutate: logout, isPending } = useMutation({
+    mutationFn: () => authService.logout(),
+    onSuccess: () => {
+      queryClient.clear();
+      router.push(`/${locale}/login`);
+    },
+    onError: () => {
+      // Dù BE lỗi, vẫn clear cache phía FE để đảm bảo UI reset
+      queryClient.clear();
+      router.push(`/${locale}/login`);
+    },
+  });
 
-    // 3. Clear TanStack Query Cache (quan trọng để xóa thông tin user cũ)
-    queryClient.removeQueries({ queryKey: [AUTH_KEYS.ME_QUERY] });
-    // Có thể clear toàn bộ cache nếu muốn chắc chắn
-    // queryClient.clear();
-    
-    console.log("[Logout] Hoàn tất đăng xuất tại Client");
-  };
-
-  return {
-    logout,
-    isPending: false, // Giữ lại để không làm break UI đang dùng isPending
-  };
+  return { logout, isPending };
 };

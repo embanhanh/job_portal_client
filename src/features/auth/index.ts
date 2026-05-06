@@ -4,7 +4,6 @@ export * from "./components/SocialAuth";
 export * from "./hooks/useLogin";
 export * from "./hooks/useLogout";
 export * from "./hooks/useMe";
-export * from "./model/auth.store";
 export * from "./types/auth.type";
 export * from "./enums/auth.enum";
 export * from "./constants/auth.constant";

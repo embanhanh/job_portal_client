@@ -6,8 +6,8 @@ const intlMiddleware = createMiddleware(routing);
 
 export default function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  
-  // Public routes that don't need auth checking
+
+  // Public routes không cần auth checking
   if (
     pathname.startsWith('/api') ||
     pathname.startsWith('/_next') ||
@@ -16,42 +16,36 @@ export default function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // 1. Run next-intl middleware to handle locale routing
+  // 1. Chạy next-intl middleware để xử lý locale routing
   const response = intlMiddleware(request);
 
-  // 2. Auth & Role gating logic
+  // 2. Auth logic — check HTTP-only cookie 'access_token'
+  // Middleware đọc được HTTP-only cookie từ request headers
   const token = request.cookies.get('access_token')?.value;
-  const role = request.cookies.get('user_role')?.value;
-  
-  // Get current locale from URL or fallback
+
+  // Lấy locale từ URL
   const [, locale] = pathname.split('/');
-  const validLocale = routing.locales.includes(locale as "vi" | "en") ? locale : routing.defaultLocale;
-  
-  // Normalize pathname to exclude locale prefix for easier matching
+  const validLocale = routing.locales.includes(locale as "vi" | "en")
+    ? locale
+    : routing.defaultLocale;
+
+  // Normalize pathname bỏ locale prefix
   const pathWithoutLocale = pathname.replace(`/${locale}`, '') || '/';
-  
-  const isAuthRoute = pathWithoutLocale.startsWith('/login') || pathWithoutLocale.startsWith('/register');
+
+  const isAuthRoute = pathWithoutLocale.startsWith('/login') ||
+    pathWithoutLocale.startsWith('/register');
   const isEmployerRoute = pathWithoutLocale.startsWith('/employer');
   const isAdminRoute = pathWithoutLocale.startsWith('/admin');
-  
-  if (token) {
-    // If logged in and trying to access login/register -> redirect to appropriate home
-    if (isAuthRoute) {
-      if (role === 'EMPLOYER') return NextResponse.redirect(new URL(`/${validLocale}/employer/dashboard`, request.url));
-      if (role === 'ADMIN') return NextResponse.redirect(new URL(`/${validLocale}/admin`, request.url));
-      return NextResponse.redirect(new URL(`/${validLocale}/`, request.url));
-    }
 
-    // Role-based protection
-    if (isEmployerRoute && role !== 'EMPLOYER' && role !== 'ADMIN') {
+  if (token) {
+    // Đã đăng nhập → redirect ra khỏi login/register
+    if (isAuthRoute) {
       return NextResponse.redirect(new URL(`/${validLocale}/`, request.url));
     }
-    
-    if (isAdminRoute && role !== 'ADMIN') {
-      return NextResponse.redirect(new URL(`/${validLocale}/`, request.url));
-    }
+    // Employer/Admin route: không redirect ở middleware theo role
+    // → Client-side RoleGuard sẽ hiển thị Forbidden nếu không đủ quyền
   } else {
-    // If not logged in and trying to access protected routes
+    // Chưa đăng nhập → bảo vệ các route cần auth
     if (isEmployerRoute || isAdminRoute) {
       return NextResponse.redirect(new URL(`/${validLocale}/login`, request.url));
     }

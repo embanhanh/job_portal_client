@@ -8,10 +8,16 @@ export const authService = {
   login: async (credentials: LoginInput): Promise<AuthResponse> => {
     return http.post<AuthResponse>(AUTH_ENDPOINTS.LOGIN, credentials);
   },
-  register: async (data: RegisterInput) => {
+
+  register: async (data: RegisterInput): Promise<AuthResponse> => {
     return http.post<AuthResponse>(AUTH_ENDPOINTS.REGISTER, data);
   },
-  me: async () => {
+
+  me: async (): Promise<User> => {
     return http.get<User>(AUTH_ENDPOINTS.ME);
+  },
+
+  logout: async (): Promise<AuthResponse> => {
+    return http.post<AuthResponse>(AUTH_ENDPOINTS.LOGOUT, {});
   },
 };
