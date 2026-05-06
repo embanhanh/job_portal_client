@@ -6,11 +6,12 @@ import { Globe, LogIn, LogOut, PlusCircle } from "lucide-react";
 import Link from "next/link";
 import { useMe } from "@/features/auth/hooks/useMe";
 import { useLogout } from "@/features/auth/hooks/useLogout";
+import { Role } from "@/features/auth";
 
 export function ClientHeaderActions() {
   const t = useTranslations("auth");
   const { data: user, isLoading } = useMe();
-  const { mutate: logout, isPending: isLoggingOut } = useLogout();
+  const { logout, isPending: isLoggingOut } = useLogout();
 
   const role = user?.role || null;
 
@@ -22,9 +23,9 @@ export function ClientHeaderActions() {
 
   return (
     <div className="flex items-center gap-4">
-      <Button 
-        variant="ghost" 
-        size="icon" 
+      <Button
+        variant="ghost"
+        size="icon"
         onClick={toggleLanguage}
         className="rounded-full"
         aria-label="Change language"
@@ -36,8 +37,8 @@ export function ClientHeaderActions() {
         <div className="h-10 w-24 animate-pulse rounded-full bg-muted"></div>
       ) : (
         <>
-          {role === "EMPLOYER" && (
-            <Button 
+          {role === Role.EMPLOYER && (
+            <Button
               render={<Link href="/employer/post-job" />}
               className="rounded-full px-6 font-medium"
             >
@@ -46,10 +47,10 @@ export function ClientHeaderActions() {
             </Button>
           )}
 
-          {role === "ADMIN" && (
-            <Button 
+          {role === Role.ADMIN && (
+            <Button
               render={<Link href="/admin" />}
-              variant="outline" 
+              variant="outline"
               className="rounded-full px-6 font-medium"
             >
               {t("admin_dashboard")}
@@ -57,7 +58,7 @@ export function ClientHeaderActions() {
           )}
 
           {role ? (
-            <Button 
+            <Button
               variant="outline"
               className="rounded-full px-6 font-medium"
               onClick={() => logout()}
@@ -67,7 +68,7 @@ export function ClientHeaderActions() {
               {t("logout")}
             </Button>
           ) : (
-            <Button 
+            <Button
               render={<Link href="/login" />}
               className="rounded-full px-6 font-medium"
             >

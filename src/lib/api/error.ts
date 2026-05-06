@@ -1,29 +1,44 @@
+// lib/api/error.ts
 import axios, { AxiosError } from "axios";
-import { ApiError, ApiResponse } from "./types";
+import { ApiException, ApiResponse } from "./types";
 
-export const normalizeError = (error: unknown): ApiError => {
+export const normalizeError = (error: unknown): ApiException => {
+  // Case 1: Lỗi từ axios (network error, 4xx, 5xx)
   if (axios.isAxiosError(error)) {
     const axiosError = error as AxiosError<ApiResponse<null>>;
-    
-    // If the backend returns our standard format inside the error response
-    if (axiosError.response?.data) {
-      const responseData = axiosError.response.data;
-      return {
+    const responseData = axiosError.response?.data;
+
+    if (responseData) {
+      return new ApiException({
         message: responseData.message || axiosError.message,
-        statusCode: responseData.statusCode || axiosError.response.status,
+        statusCode:
+          responseData.statusCode || axiosError.response?.status || 500,
         errors: responseData.errors,
-      };
+      });
     }
 
-    return {
-      message: axiosError.message,
-      statusCode: axiosError.response?.status,
-    };
+    // Network error (không có response — timeout, CORS, offline)
+    return new ApiException({
+      message: axiosError.message || "Network error",
+      statusCode: axiosError.response?.status || 0,
+      // statusCode 0 = không kết nối được server
+    });
   }
 
-  // Fallback for non-axios errors
-  return {
-    message: error instanceof Error ? error.message : "An unknown error occurred",
+  // Case 2: ApiException đã được normalize rồi (re-throw từ unwrap)
+  if (error instanceof ApiException) return error;
+
+  // Case 3: Lỗi JS thuần
+  if (error instanceof Error) {
+    return new ApiException({
+      message: error.message,
+      statusCode: 500,
+    });
+  }
+
+  // Case 4: Unknown
+  return new ApiException({
+    message: "An unknown error occurred",
     statusCode: 500,
-  };
+  });
 };

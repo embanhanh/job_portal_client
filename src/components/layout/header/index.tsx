@@ -23,10 +23,18 @@ export function Header() {
             </Link>
 
             <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-muted-foreground">
-              <Link href="#" className="hover:text-primary transition-colors">{tNav("find_job")}</Link>
-              <Link href="#" className="hover:text-primary transition-colors">{tNav("companies")}</Link>
-              <Link href="#" className="hover:text-primary transition-colors">{tNav("guide")}</Link>
-              <Link href="#" className="hover:text-primary transition-colors">{tNav("about_us")}</Link>
+              <Link href="#" className="hover:text-primary transition-colors">
+                {tNav("find_job")}
+              </Link>
+              <Link href="#" className="hover:text-primary transition-colors">
+                {tNav("companies")}
+              </Link>
+              <Link href="#" className="hover:text-primary transition-colors">
+                {tNav("guide")}
+              </Link>
+              <Link href="#" className="hover:text-primary transition-colors">
+                {tNav("about_us")}
+              </Link>
             </nav>
           </div>
 

@@ -132,7 +132,51 @@ Luôn mô tả cấu trúc File và Data Flow trong Implementation Plan trước
 
 ---
 
-## 7. Path Structure
+## 7. UI Notifications & Error Handling
+
+### Toaster (`sonner`)
+- Cấu hình **một lần duy nhất** tại root layout: `<Toaster position="top-right" richColors />`.
+- API sử dụng: `toast.success('...')`, `toast.error('...')`, `toast.info('...')`.
+- **Luôn** hiển thị `apiError.message` qua `toast.error()` trong mọi catch block.
+
+### API Error Normalization
+- **BẮT BUỘC** dùng `normalizeError(err)` từ `@/lib/api/error` — KHÔNG bắt lỗi thủ công bằng `isAxiosError`.
+- `normalizeError` trả về `ApiError`:
+  ```ts
+  interface ApiError {
+    message: string;        // Thông báo lỗi chung — hiển thị qua toast.error()
+    statusCode?: number;    // HTTP status code
+    errors?: Record<string, string[]>; // Lỗi chi tiết theo field — map vào form
+  }
+  ```
+
+### Form Error Mapping (Critical Pattern)
+Khi backend trả về `errors: Record<string, string[]>`, **phải** map vào form fields:
+```ts
+if (apiError.errors) {
+  Object.entries(apiError.errors).forEach(([field, messages]) => {
+    form.setError(field as keyof FormInput, {
+      type: "server",
+      message: messages[0],
+    });
+  });
+}
+```
+
+### Phân biệt lỗi Zod vs lỗi Server trong FormMessage
+- Lỗi **Zod** (client-side): `type !== "server"` → dùng `tCommon(message as ValidationKey)` để i18n.
+- Lỗi **Server**: `type === "server"` → hiển thị trực tiếp `message` (đã là string từ backend).
+```tsx
+<FormMessage>
+  {error.type === "server"
+    ? error.message
+    : tCommon(error.message as ValidationKey)}
+</FormMessage>
+```
+
+---
+
+## 8. Path Structure
 
 ```
 src/                          # Toàn bộ application code

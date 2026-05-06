@@ -90,6 +90,7 @@
 - [x] **Auth** (`src/features/auth/`)
   - [x] Login page + Client Form (zod validation, React Query)
   - [x] Register page + Client Form (zod validation, React Query)
+  - [x] UI Notifications (sonner) & Error Normalization logic
   - [ ] Forgot password
 - [ ] **Jobs** (`src/features/jobs/`)
   - [ ] Job listing (PPR enabled)

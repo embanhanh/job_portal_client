@@ -42,6 +42,19 @@ export const http = {
     return unwrapData(res.data);
   },
 
+  async patch<TResponse, TBody = unknown>(
+    url: string,
+    data?: TBody,
+    config?: AxiosRequestConfig,
+  ): Promise<TResponse> {
+    const res = await apiClient.patch<ApiResponse<TResponse>>(
+      url,
+      data,
+      config,
+    );
+    return unwrapData(res.data);
+  },
+
   async delete<TResponse>(
     url: string,
     config?: AxiosRequestConfig,

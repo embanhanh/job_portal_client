@@ -1,7 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { LoginLayout } from "@/features/auth/components/login/LoginLayout";
-import { LoginMarketing } from "@/features/auth/components/login/LoginMarketing";
-import { LoginForm } from "@/features/auth/components/login/LoginForm";
+import { LoginForm } from "@/features/auth/components/LoginForm";
 
 export async function generateMetadata({
   params,
@@ -23,10 +21,5 @@ export default async function LoginPage({
   params: Promise<{ locale: string }>;
 }) {
   await params;
-  return (
-    <LoginLayout
-      marketingPanel={<LoginMarketing />}
-      formPanel={<LoginForm />}
-    />
-  );
+  return <LoginForm />;
 }

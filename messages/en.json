@@ -46,22 +46,25 @@
       "forgot_password": "Forgot password?",
       "loading": "Logging in...",
       "no_account": "Don't have an account?",
-      "register_link": "Register now"
+      "register_link": "Register now",
+      "success_message": "Login successfull!"
     },
     "register_page": {
       "title": "Register",
       "subtitle": "Create a new account to get started.",
+      "fullName_label": "Full Name",
+      "fullName_placeholder": "Enter your full name...",
+      "phone_label": "Phone Number",
+      "phone_placeholder": "Enter your phone number...",
       "email_label": "Email",
       "email_placeholder": "Enter your email address...",
       "password_label": "Password",
       "password_placeholder": "Create a password (min 6 characters)",
-      "role_label": "I am a:",
-      "role_candidate": "Job Seeker",
-      "role_employer": "Employer",
       "submit_button": "Register",
       "loading": "Registering...",
       "has_account": "Already have an account?",
-      "login_link": "Login now"
+      "login_link": "Login now",
+      "success_message": "Register successfull!"
     },
     "marketing": {
       "title": "Find the gold standard for your career.",
@@ -70,6 +73,8 @@
     "validation": {
       "invalid_email": "Invalid email address.",
       "password_too_short": "Password must be at least 6 characters.",
+      "full_name_too_short": "Full name must be at least 2 characters.",
+      "invalid_phone": "Invalid phone number (10-11 digits).",
       "invalid_role": "Please select a valid role."
     }
   },
@@ -77,6 +82,13 @@
     "language_vi": "Tiếng Việt",
     "language_en": "English",
     "language_switch": "Tiếng Việt / English",
-    "copyright": "© {year} JobPortal. All rights reserved."
+    "copyright": "© {year} JobPortal. All rights reserved.",
+    "multilingual": {
+      "tools": "Tools",
+      "copy_from": "Copy from {locale}",
+      "translate_from": "Translate from {locale}",
+      "copy_success": "Content copied!",
+      "translate_success": "Content translated!"
+    }
   }
 }

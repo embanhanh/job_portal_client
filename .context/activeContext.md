@@ -1,8 +1,8 @@
 # Active Context
 
 ## Current Focus
-**Phase 1 — Foundation Setup: HOÀN TẤT** ✅
-Dự án đã sẵn sàng cho Phase 2: Multi-Role Architecture.
+**Phase 2 — Multi-Role Architecture: ĐANG TRIỂN KHAI** 🚀
+Dự án đã hoàn thành luồng xác thực (Login/Register) cho Public/Candidate. Đang tiến tới xây dựng giao diện và layout riêng cho từng Role.
 
 ---
 
@@ -26,6 +26,7 @@ Dự án đã sẵn sàng cho Phase 2: Multi-Role Architecture.
 | tailwind-merge | ^3.5.0 | Class merging |
 | tw-animate-css | ^1.4.0 | Animation utilities |
 | class-variance-authority | ^0.7.1 | shadcn variants |
+| sonner | ^2.0.1 | Toaster notifications |
 | @base-ui/react | ^1.4.1 | Base UI primitives (shadcn dep) |
 | babel-plugin-react-compiler | ^1.0.0 | React Compiler (dev) |
 
@@ -69,6 +70,16 @@ Dự án đã sẵn sàng cho Phase 2: Multi-Role Architecture.
 - Sử dụng `zustand` chỉ cho `accessToken`.
 - Bọc toàn bộ app với `QueryClientProvider`.
 - Refactor `ClientHeaderActions` để dùng `useMe` (thay vì mock).
+- Hoàn thiện luồng đăng nhập (LoginForm + useLogin).
+- Hoàn thiện tính năng đăng ký ứng viên (RegisterForm + useRegister) với đầy đủ validation và i18n.
+- Tích hợp `sonner` Toaster vào root layout (`position="top-right", richColors`).
+- Cập nhật `types.ts`: `errors` trong `ApiError` và `ApiResponse` giờ là `Record<string, string[]>` đồng bộ với backend.
+- Viết lại `LoginForm` và `RegisterForm` với pattern chuẩn:
+  - `toast.error(apiError.message)` cho thông báo lỗi tổng quát.
+  - `form.setError(field, { type: "server", message })` để map lỗi field-level từ backend.
+  - `FormMessage` phân biệt lỗi server (hiển thị trực tiếp) vs lỗi Zod (qua `tCommon` i18n).
+- Cập nhật `AGENTS.md` section 7 với protocol đầy đủ và code examples chuẩn.
+- Đồng bộ giao diện (rounded-none, enterprise style) theo Stitch Design System.
 
 ---
 
@@ -95,11 +106,11 @@ Dự án đã sẵn sàng cho Phase 2: Multi-Role Architecture.
 
 ---
 
-## Next Steps (Phase 3)
-1. Tạo các route groups còn lại: `(public)`, `(candidate)`, `(employer)`, `(admin)` trong `src/app/[locale]/`.
-2. Tạo layouts riêng cho từng role (Top Nav / Sidebar / Dashboard).
-3. ~Implement Login/Register page UI và tích hợp `useLogin` hook.~ (Đã hoàn thành ở Public Route)
-4. ~Xử lý middleware để role-gating bảo vệ routes an toàn dựa vào token.~ (Đã hoàn thành)
-5. Tạo RegisterForm và trang Register.
-6. Cập nhật components navigation dựa theo auth state thật.
+## Next Steps
+1. Xây dựng Layouts cho từng Role:
+   - `(candidate)`: Top Navigation tinh tế.
+   - `(employer)`: Sidebar chuyên nghiệp.
+   - `(admin)`: Dashboard tối giản.
+2. Cập nhật components navigation dựa theo auth state thật.
+3. Bắt đầu Phase 3: Core Business (Job Management).
 

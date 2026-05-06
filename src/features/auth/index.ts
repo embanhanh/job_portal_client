@@ -1,6 +1,5 @@
 export * from "./components/LoginForm";
 export * from "./components/RegisterForm";
-export * from "./components/AuthLayout";
 export * from "./components/SocialAuth";
 export * from "./hooks/useLogin";
 export * from "./hooks/useLogout";

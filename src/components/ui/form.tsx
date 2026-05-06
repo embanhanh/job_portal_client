@@ -147,7 +147,8 @@ const FormMessage = React.forwardRef<
   React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, children, ...props }, ref) => {
   const { error, formMessageId } = useFormField()
-  const body = error ? String(error?.message) : children
+  // Ưu tiên children nếu có (để ghi đè i18n/ServerAwareFormMessage), nếu không thì dùng raw error.message
+  const body = children ? children : (error ? String(error?.message) : null)
 
   if (!body) {
     return null
@@ -159,7 +160,9 @@ const FormMessage = React.forwardRef<
       id={formMessageId}
       className={cn("text-[0.8rem] font-medium text-red-500", className)}
       {...props}
-    />
+    >
+      {body}
+    </p>
   )
 })
 FormMessage.displayName = "FormMessage"

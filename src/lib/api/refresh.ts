@@ -2,51 +2,37 @@ import axios from "axios";
 import { AUTH_ENDPOINTS } from "./endpoints";
 import { useAuthStore } from "@/features/auth/model/auth.store";
 import { ApiResponse } from "./types";
+import { BASE_API_CONFIG } from "./config";
+import { getRequestLocale } from "./locale";
 
 // Create a bypassed client specifically for refreshing to avoid interceptor loops
-const refreshClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api/v1",
-  withCredentials: true,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
+const refreshClient = axios.create(BASE_API_CONFIG);
 
 refreshClient.interceptors.request.use(
   async (config) => {
-    let locale = "vi";
-    if (typeof window !== "undefined") {
-      locale = document.documentElement.lang || "vi";
-    } else {
-      try {
-        const { getLocale } = await import("next-intl/server");
-        const serverLocale = await getLocale();
-        if (serverLocale) {
-          locale = serverLocale;
-        }
-      } catch (error) {
-        // Ignore if not in a server request context
-      }
-    }
-    config.headers["Accept-Language"] = locale;
+    config.headers["Accept-Language"] = await getRequestLocale();
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 export const refreshTokenFlow = async (): Promise<string | null> => {
   try {
-    const response = await refreshClient.post<ApiResponse<{ accessToken: string }>>(AUTH_ENDPOINTS.REFRESH);
-    
-    // Assuming backend returns { success: true, data: { accessToken: "..." } }
-    const { accessToken } = response.data.data;
-    
+    console.log("[Refresh] Đang gọi API refresh...");
+    const response = await refreshClient.post<
+      ApiResponse<{ accessToken: string }>
+    >(AUTH_ENDPOINTS.REFRESH);
+
+    const { accessToken } = response.data.data!;
+    console.log("[Refresh] Nhận accessToken mới thành công");
+
     // Update Zustand
     useAuthStore.getState().setAccessToken(accessToken);
     return accessToken;
   } catch (error) {
+    console.error("[Refresh] Gọi API refresh thất bại:", error);
     // Refresh failed -> clear state
-    useAuthStore.getState().clearAccessToken();
+    useAuthStore.getState().clearAuth();
     return null;
   }
 };

@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 
-export function LoginMarketing() {
+export function AuthMarketing() {
   const t = useTranslations("auth.marketing");
 
   return (

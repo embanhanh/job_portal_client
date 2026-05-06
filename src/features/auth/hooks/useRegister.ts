@@ -1,25 +1,26 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { authService } from "@/services/auth/auth.service";
 import { useAuthStore } from "@/features/auth/model/auth.store";
-import { LoginInput } from "@/features/auth/schemas/login.schema";
+import { RegisterInput } from "@/features/auth/schemas/register.schema";
 import { AUTH_KEYS } from "@/features/auth/constants/auth.constant";
 
-export const useLogin = () => {
+export const useRegister = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (credentials: LoginInput) => {
-      const response = await authService.login(credentials);
+    mutationFn: async (data: RegisterInput) => {
+      const response = await authService.register(data);
       return response;
     },
     onSuccess: (data) => {
-      console.log("[Login] Đăng nhập thành công, đang lưu token...");
       useAuthStore.getState().setAccessToken(data.accessToken);
-
       // Save to cookie for middleware
       if (typeof document !== "undefined") {
         document.cookie = `${AUTH_KEYS.ACCESS_TOKEN_COOKIE}=${data.accessToken}; path=/; max-age=86400; SameSite=Lax`;
-        console.log("[Login] Đã lưu accessToken vào Cookie");
+        // Save role for middleware
+        if (data.user?.role) {
+          document.cookie = `user_role=${data.user.role}; path=/; max-age=86400; SameSite=Lax`;
+        }
       }
       // Invalidate 'me' query to fetch the user profile and update the whole app
       queryClient.invalidateQueries({ queryKey: [AUTH_KEYS.ME_QUERY] });

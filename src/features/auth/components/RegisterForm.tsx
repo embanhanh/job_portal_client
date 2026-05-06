@@ -1,17 +1,11 @@
 "use client";
 
-import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
-import Link from "next/link";
-import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
 
-import { authService } from "@/services/auth/auth.service";
-import { useAuthStore } from "@/features/auth/model/auth.store";
-import { registerSchema, RegisterInput } from "@/features/auth/schemas/register.schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -20,160 +14,172 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
+
+import { useRegister } from "@/features/auth/hooks/useRegister";
+import {
+  registerSchema,
+  type RegisterInput,
+} from "@/features/auth/schemas/register.schema";
 import { Role } from "@/features/auth/enums/auth.enum";
-import { useQueryClient } from "@tanstack/react-query";
-import { AUTH_KEYS } from "@/features/auth/constants/auth.constant";
+import { ApiException } from "@/lib/api/types";
+import { ServerAwareFormMessage } from "./ServerAwareFormMessage";
+import { ERROR_TYPES } from "../constants/auth.constant";
 
 export function RegisterForm() {
   const t = useTranslations("auth.register_page");
+  const tCommon = useTranslations("auth.validation");
   const router = useRouter();
-  const queryClient = useQueryClient();
-  const [error, setError] = React.useState<string | null>(null);
+  const { mutateAsync: register, isPending } = useRegister();
 
-  const { mutate: registerUser, isPending } = useMutation({
-    mutationFn: async (data: RegisterInput) => {
-      const response = await authService.register(data);
-      return response;
-    },
-    onSuccess: (data) => {
-      useAuthStore.getState().setAccessToken(data.accessToken);
-      
-      if (typeof document !== "undefined") {
-        document.cookie = `${AUTH_KEYS.ACCESS_TOKEN_COOKIE}=${data.accessToken}; path=/; max-age=86400; SameSite=Lax`;
-        if (data.user?.role) {
-          document.cookie = `user_role=${data.user.role}; path=/; max-age=86400; SameSite=Lax`;
-        }
-      }
-
-      queryClient.invalidateQueries({ queryKey: [AUTH_KEYS.ME_QUERY] });
-      
-      const role = data.user.role;
-      if (role === Role.EMPLOYER) {
-        router.push("/employer/dashboard");
-      } else {
-        router.push("/");
-      }
-    },
-    onError: (err: Error) => {
-      setError(err.message || "Đăng ký thất bại. Vui lòng thử lại.");
-    }
-  });
+  // Used for client-side Zod validation messages (i18n keys)
 
   const form = useForm<RegisterInput>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
       email: "",
       password: "",
+      fullName: "",
+      phone: "",
       role: Role.CANDIDATE,
     },
   });
 
-  function onSubmit(values: RegisterInput) {
-    setError(null);
-    registerUser(values);
-  }
+  const onSubmit = async (data: RegisterInput) => {
+    try {
+      await register(data);
+      toast.success(t("success_message"));
+      router.push("/");
+      router.refresh();
+    } catch (err: unknown) {
+      if (!ApiException.isApiException(err)) {
+        // Lỗi không mong đợi: JS runtime error, network hoàn toàn chết,...
+        toast.error(t("unexpected_error"));
+        return;
+      }
+
+      if (err.errors) {
+        // Validation errors từ server → map vào từng field
+        Object.entries(err.errors).forEach(([field, messages]) => {
+          form.setError(field as keyof RegisterInput, {
+            type: ERROR_TYPES.SERVER,
+            message: messages[0],
+          });
+        });
+        return;
+      }
+
+      // Lỗi chung: "Email đã tồn tại", "Server error", timeout,...
+      toast.error(err.message);
+    }
+  };
 
   return (
-    <div className="w-full max-w-md mx-auto space-y-6">
-      <div className="space-y-2 text-center">
-        <h1 className="text-3xl font-bold tracking-tight">{t("title")}</h1>
-        <p className="text-muted-foreground">{t("subtitle")}</p>
+    <div className="flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
+      <div className="flex flex-col space-y-2 text-center">
+        <h1 className="text-2xl font-semibold tracking-tight">{t("title")}</h1>
+        <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
       </div>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("email_label")}</FormLabel>
-                <FormControl>
-                  <Input 
-                    placeholder={t("email_placeholder")} 
-                    type="email" 
-                    autoCapitalize="none"
-                    autoComplete="email"
-                    autoCorrect="off"
-                    disabled={isPending}
-                    {...field} 
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("password_label")}</FormLabel>
-                <FormControl>
-                  <Input 
-                    placeholder={t("password_placeholder")} 
-                    type="password" 
-                    autoComplete="new-password"
-                    disabled={isPending}
-                    {...field} 
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          
-          <FormField
-            control={form.control}
-            name="role"
-            render={({ field }) => (
-              <FormItem className="space-y-3">
-                <FormLabel>{t("role_label")}</FormLabel>
-                <FormControl>
-                  <div className="grid grid-cols-2 gap-4">
-                    <Button
-                      type="button"
-                      variant={field.value === Role.CANDIDATE ? "default" : "outline"}
-                      className="w-full"
-                      onClick={() => field.onChange(Role.CANDIDATE)}
-                    >
-                      {t("role_candidate")}
-                    </Button>
-                    <Button
-                      type="button"
-                      variant={field.value === Role.EMPLOYER ? "default" : "outline"}
-                      className="w-full"
-                      onClick={() => field.onChange(Role.EMPLOYER)}
-                    >
-                      {t("role_employer")}
-                    </Button>
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          
-          {error && (
-            <div className="p-3 text-sm font-medium text-danger bg-danger/10 rounded-md">
-              {error}
-            </div>
-          )}
 
-          <Button type="submit" className="w-full" disabled={isPending}>
-            {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {isPending ? t("loading") : t("submit_button")}
-          </Button>
-        </form>
-      </Form>
-      
-      <div className="text-center text-sm text-muted-foreground">
-        {t("has_account")}{" "}
-        <Link href="/login" className="font-semibold text-primary hover:underline">
-          {t("login_link")}
-        </Link>
+      <div className="grid gap-6">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="fullName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("fullName_label")}</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder={t("fullName_placeholder")}
+                      disabled={isPending}
+                      {...field}
+                    />
+                  </FormControl>
+                  <ServerAwareFormMessage tCommon={tCommon} />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("phone_label")}</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder={t("phone_placeholder")}
+                      type="tel"
+                      disabled={isPending}
+                      {...field}
+                    />
+                  </FormControl>
+                  <ServerAwareFormMessage tCommon={tCommon} />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("email_label")}</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder={t("email_placeholder")}
+                      type="email"
+                      autoCapitalize="none"
+                      autoComplete="email"
+                      autoCorrect="off"
+                      disabled={isPending}
+                      {...field}
+                    />
+                  </FormControl>
+                  <ServerAwareFormMessage tCommon={tCommon} />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("password_label")}</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder={t("password_placeholder")}
+                      type="password"
+                      autoComplete="new-password"
+                      disabled={isPending}
+                      {...field}
+                    />
+                  </FormControl>
+                  <ServerAwareFormMessage tCommon={tCommon} />
+                </FormItem>
+              )}
+            />
+
+            <Button disabled={isPending} className="w-full mt-2" type="submit">
+              {isPending ? t("loading") : t("submit_button")}
+            </Button>
+          </form>
+        </Form>
       </div>
+
+      <p className="px-8 text-center text-sm text-muted-foreground">
+        {t("has_account")}{" "}
+        <Button
+          variant="link"
+          className="p-0 h-auto font-normal"
+          onClick={() => router.push("/login")}
+        >
+          {t("login_link")}
+        </Button>
+      </p>
     </div>
   );
 }

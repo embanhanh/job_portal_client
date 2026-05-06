@@ -14,7 +14,4 @@ export const authService = {
   me: async () => {
     return http.get<User>(AUTH_ENDPOINTS.ME);
   },
-  logout: async () => {
-    return http.post<null>(AUTH_ENDPOINTS.LOGOUT);
-  },
 };

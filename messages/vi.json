@@ -46,22 +46,25 @@
       "forgot_password": "Quên mật khẩu?",
       "loading": "Đang đăng nhập...",
       "no_account": "Chưa có tài khoản?",
-      "register_link": "Đăng ký ngay"
+      "register_link": "Đăng ký ngay",
+      "success_message": "Đăng nhập thành công!"
     },
     "register_page": {
       "title": "Đăng ký",
       "subtitle": "Tạo tài khoản mới để bắt đầu.",
+      "fullName_label": "Họ và tên",
+      "fullName_placeholder": "Nhập họ và tên của bạn...",
+      "phone_label": "Số điện thoại",
+      "phone_placeholder": "Nhập số điện thoại...",
       "email_label": "Email",
       "email_placeholder": "Nhập địa chỉ email...",
       "password_label": "Mật khẩu",
       "password_placeholder": "Tạo mật khẩu (tối thiểu 6 ký tự)",
-      "role_label": "Bạn là:",
-      "role_candidate": "Ứng viên tìm việc",
-      "role_employer": "Nhà tuyển dụng",
       "submit_button": "Đăng ký",
       "loading": "Đang đăng ký...",
       "has_account": "Đã có tài khoản?",
-      "login_link": "Đăng nhập ngay"
+      "login_link": "Đăng nhập ngay",
+      "success_message": "Đăng ký thành công!"
     },
     "marketing": {
       "title": "Khởi tạo tiêu chuẩn vàng cho sự nghiệp của bạn.",
@@ -70,6 +73,8 @@
     "validation": {
       "invalid_email": "Email không hợp lệ.",
       "password_too_short": "Mật khẩu phải có ít nhất 6 ký tự.",
+      "full_name_too_short": "Họ tên phải có ít nhất 2 ký tự.",
+      "invalid_phone": "Số điện thoại không hợp lệ (10-11 số).",
       "invalid_role": "Vui lòng chọn vai trò hợp lệ."
     }
   },
@@ -77,6 +82,13 @@
     "language_vi": "Tiếng Việt",
     "language_en": "English",
     "language_switch": "Tiếng Việt / English",
-    "copyright": "© {year} JobPortal. Đã đăng ký bản quyền."
+    "copyright": "© {year} JobPortal. Đã đăng ký bản quyền.",
+    "multilingual": {
+      "tools": "Công cụ",
+      "copy_from": "Copy từ {locale}",
+      "translate_from": "Dịch từ {locale}",
+      "copy_success": "Đã copy nội dung!",
+      "translate_success": "Đã dịch nội dung!"
+    }
   }
 }
