@@ -1,80 +1,60 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { Building2, PlusCircle, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Globe, LogIn, LogOut, PlusCircle } from "lucide-react";
-import Link from "next/link";
 import { useMe } from "@/features/auth/hooks/useMe";
-import { useLogout } from "@/features/auth/hooks/useLogout";
 import { Role } from "@/features/auth";
+import { Link } from "@/i18n/routing";
+import { LocaleSwitcher } from "./LocaleSwitcher";
+import { UserAccountMenu } from "./UserAccountMenu";
 
 export function ClientHeaderActions() {
-  const t = useTranslations("auth");
+  const tAuth = useTranslations("auth");
+  const tCommon = useTranslations("common");
   const { data: user, isLoading } = useMe();
-  const { logout, isPending: isLoggingOut } = useLogout();
 
-  const role = user?.role || null;
-
-  // Giả lập Language Switcher đơn giản
-  const toggleLanguage = () => {
-    // Logic đổi locale sẽ được tích hợp với i18n routing
-    console.log("Toggle language");
-  };
+  const role = user?.role || Role.CANDIDATE;
 
   return (
-    <div className="flex items-center gap-4">
-      <Button
-        variant="ghost"
-        size="icon"
-        onClick={toggleLanguage}
-        className="rounded-full"
-        aria-label="Change language"
-      >
-        <Globe className="h-5 w-5" />
-      </Button>
+    <div className="flex items-center gap-3">
+      {/* Locale Switcher */}
+      <LocaleSwitcher />
 
       {isLoading ? (
-        <div className="h-10 w-24 animate-pulse rounded-full bg-muted"></div>
+        <div className="h-9 w-24 animate-pulse rounded-full bg-muted/60"></div>
       ) : (
         <>
+          {role === Role.CANDIDATE && (
+            <Link href="/employer-registration">
+              <Button
+                variant="outline"
+                className="hidden lg:flex rounded-full px-5 font-semibold border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-all shadow-sm"
+              >
+                <Building2 className="mr-2 h-4 w-4" />
+                {tCommon("post_job")}
+              </Button>
+            </Link>
+          )}
+
           {role === Role.EMPLOYER && (
-            <Button
-              render={<Link href="/employer/post-job" />}
-              className="rounded-full px-6 font-medium"
-            >
-              <PlusCircle className="mr-2 h-4 w-4" />
-              {t("post_job")}
-            </Button>
+            <Link href="/employer/post-job">
+              <Button className="hidden lg:flex rounded-full px-5 font-semibold shadow-md shadow-primary/20 hover:shadow-lg transition-all active:scale-95">
+                <PlusCircle className="mr-2 h-4 w-4" />
+                {tCommon("post_job")}
+              </Button>
+            </Link>
           )}
 
-          {role === Role.ADMIN && (
-            <Button
-              render={<Link href="/admin" />}
-              variant="outline"
-              className="rounded-full px-6 font-medium"
-            >
-              {t("admin_dashboard")}
-            </Button>
-          )}
-
-          {role ? (
-            <Button
-              variant="outline"
-              className="rounded-full px-6 font-medium"
-              onClick={() => logout()}
-              disabled={isLoggingOut}
-            >
-              <LogOut className="mr-2 h-4 w-4" />
-              {t("logout")}
-            </Button>
+          {user ? (
+            <UserAccountMenu user={user} />
           ) : (
-            <Button
-              render={<Link href="/login" />}
-              className="rounded-full px-6 font-medium"
-            >
-              <LogIn className="mr-2 h-4 w-4" />
-              {t("login")}
-            </Button>
+            <Link href="/login">
+              <Button className="rounded-full px-6 font-bold shadow-lg shadow-primary/25 hover:shadow-xl active:scale-95 transition-all">
+                <LogIn className="mr-2 h-4 w-4" />
+                {tAuth("login_page.title")}
+              </Button>
+            </Link>
           )}
         </>
       )}

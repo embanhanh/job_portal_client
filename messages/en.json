@@ -15,6 +15,17 @@
     "guide": "Career Guide",
     "about_us": "About Us"
   },
+  "header": {
+    "user_menu": {
+      "profile": "Profile",
+      "company_management": "Company Management",
+      "admin_dashboard": "Admin Dashboard",
+      "settings": "Account Settings",
+      "logout": "Logout",
+      "post_job": "Post a Job",
+      "company_registration": "Company Registration"
+    }
+  },
   "footer": {
     "company_desc": "Professional recruitment platform connecting talent with leading enterprises.",
     "categories": "Categories",
@@ -79,16 +90,58 @@
     }
   },
   "common": {
-    "language_vi": "Tiếng Việt",
+    "language_vi": "Vietnamese",
     "language_en": "English",
-    "language_switch": "Tiếng Việt / English",
+    "language_switch": "Vietnamese / English",
+    "languages": {
+      "vi": "Vietnamese",
+      "en": "English"
+    },
     "copyright": "© {year} JobPortal. All rights reserved.",
+    "post_job": "Post a Job",
     "multilingual": {
       "tools": "Tools",
       "copy_from": "Copy from {locale}",
       "translate_from": "Translate from {locale}",
       "copy_success": "Content copied!",
       "translate_success": "Content translated!"
+    }
+  },
+  "company": {
+    "registration": {
+      "title": "Employer Registration",
+      "subtitle": "Upgrade your account to start posting jobs and finding talent.",
+      "success_message": "Company registration submitted! Please wait for admin approval.",
+      "pending_notice": "Your company registration is being processed.",
+      "approved_notice": "Your company has been approved.",
+      "form": {
+        "companyName_label": "Company Name",
+        "companyName_placeholder": "Enter official company name...",
+        "website_label": "Website",
+        "website_placeholder": "https://example.com",
+        "address_label": "Headquarters Address",
+        "address_placeholder": "Street, district, city...",
+        "industry_label": "Industry",
+        "industry_placeholder": "e.g. IT, Marketing, Finance...",
+        "description_label": "Company Description",
+        "description_placeholder": "Briefly describe your company...",
+        "logo_label": "Company Logo",
+        "businessLicense_label": "Business License",
+        "upload_hint": "Drag & drop or click to upload (Image or PDF)",
+        "submit_button": "Submit Registration",
+        "loading": "Processing..."
+      }
+    },
+    "status": {
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    },
+    "validation": {
+      "company_name_too_short": "Company name must be at least 2 characters.",
+      "description_too_short": "Description must be at least 10 characters.",
+      "business_license_required": "Please upload your business license.",
+      "invalid_url": "Invalid URL format."
     }
   }
 }

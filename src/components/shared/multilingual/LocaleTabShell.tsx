@@ -1,10 +1,11 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { cn } from '@/lib/utils';
-import type { LocaleConfig } from '@/config/locales';
-export type { LocaleConfig } from '@/config/locales';
+import * as React from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { cn } from "@/lib/utils";
+import type { LocaleConfig } from "@/config/locales";
+import { useTranslations } from "next-intl";
+export type { LocaleConfig } from "@/config/locales";
 
 interface LocaleTabShellProps {
   locales: LocaleConfig[];
@@ -19,24 +20,26 @@ export function LocaleTabShell({
   defaultLocale,
   children,
 }: LocaleTabShellProps) {
+  const tCommon = useTranslations("common");
   const initialLocale = defaultLocale || locales[0]?.locale;
 
   return (
     <Tabs defaultValue={initialLocale} className="w-full">
       <TabsList className="grid w-full grid-cols-2 lg:w-[400px]">
-        {locales.map(({ locale, label, flag }) => {
+        {locales.map(({ locale, flag }) => {
           const hasError = hasErrorPerLocale[locale];
 
           return (
             <TabsTrigger
               key={locale}
               value={locale}
-              className={cn('relative flex items-center gap-2', {
-                'text-destructive data-[state=active]:text-destructive': hasError,
+              className={cn("relative flex items-center gap-2", {
+                "text-destructive data-[state=active]:text-destructive":
+                  hasError,
               })}
             >
               <span>{flag}</span>
-              <span>{label}</span>
+              <span>{tCommon(`languages.${locale}`)}</span>
               {hasError && (
                 <span className="absolute -top-1 -right-1 flex h-2 w-2">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-destructive opacity-75"></span>

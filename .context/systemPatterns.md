@@ -8,6 +8,7 @@
 ## 1. Import Conventions
 
 ### Path Alias
+
 ```typescript
 // ✅ Đúng — dùng alias
 import { Button } from "@/components/ui/button";
@@ -18,6 +19,7 @@ import { Button } from "../../components/ui/button";
 ```
 
 ### Import trực tiếp (bundle-barrel-imports)
+
 ```typescript
 // ✅ Đúng — import thẳng
 import { Button } from "@/components/ui/button";
@@ -32,6 +34,7 @@ import { Button, Card } from "@/components/ui";
 ## 2. Component Patterns
 
 ### Server Components (RSC) — Default
+
 ```typescript
 // ✅ Không cần directive, mặc định là RSC
 export default function MyComponent() {
@@ -40,6 +43,7 @@ export default function MyComponent() {
 ```
 
 ### Client Components — Chỉ khi cần
+
 ```typescript
 "use client";
 
@@ -48,6 +52,7 @@ export function InteractiveComponent() { ... }
 ```
 
 ### Không dùng manual memo
+
 ```typescript
 // ❌ Cấm — React Compiler lo
 const memoized = useMemo(() => expensive(), [dep]);
@@ -63,11 +68,13 @@ const result = expensive();
 ## 3. Styling Conventions
 
 ### Tailwind CSS 4.1 — CSS-first
+
 - Không có `tailwind.config.js`
 - Tất cả tokens trong `src/app/globals.css` → `@theme inline {}`
 - Dark mode: `.dark` class (class-based, không phải media query)
 
 ### Class utility
+
 ```typescript
 // cn() được phép dùng trong shadcn components
 import { cn } from "@/lib/utils";
@@ -78,6 +85,7 @@ className={`base-class ${conditional ? "extra" : ""}`}
 ```
 
 ### Màu sắc — Chỉ dùng tokens
+
 ```typescript
 // ✅ Tokens từ @theme
 className="bg-primary text-primary-foreground"
@@ -94,6 +102,7 @@ style={{ color: "#000" }}
 ## 4. i18n Conventions
 
 ### Không hardcode text
+
 ```typescript
 // ✅ Đúng
 const t = useTranslations("hero");
@@ -105,6 +114,7 @@ const t = useTranslations("hero");
 ```
 
 ### Server Component i18n
+
 ```typescript
 // RSC — dùng getTranslations
 import { getTranslations } from "next-intl/server";
@@ -112,6 +122,7 @@ const t = await getTranslations("namespace");
 ```
 
 ### Client Component i18n
+
 ```typescript
 "use client";
 import { useTranslations } from "next-intl";
@@ -119,6 +130,7 @@ const t = useTranslations("namespace");
 ```
 
 ### Thêm key mới
+
 1. Thêm vào `messages/vi.json`
 2. Thêm vào `messages/en.json`
 3. Sử dụng `t("namespace.key")`
@@ -171,7 +183,11 @@ import { Main, Section, Container, Grid } from "@/components/craft";
 
 ```typescript
 // ✅ Bắt buộc cho trang Candidate
-export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "metadata" });
   return {
@@ -187,9 +203,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 ```typescript
 // ✅ Mỗi route group có error.tsx riêng
-// src/app/[locale]/(candidate)/error.tsx
+// src/app/[locale]/(public)/error.tsx
 "use client";
-export default function CandidateError({ error, reset }: { error: Error; reset: () => void }) { ... }
+export default function PublicError({ error, reset }: { error: Error; reset: () => void }) { ... }
 
 // ❌ Cấm try-catch rỗng
 try { ... } catch (e) {} // KHÔNG
@@ -201,7 +217,7 @@ try { ... } catch (e) {} // KHÔNG
 
 ```
 src/app/[locale]/
-├── (candidate)/            radius: 0.75rem, Top Navigation
+├── (public)/            radius: 0.75rem, Top Navigation
 │   ├── layout.tsx
 │   ├── error.tsx
 │   ├── jobs/
@@ -256,12 +272,12 @@ export function useJobs(filters: JobFilters) {
 
 ## 12. Naming Conventions
 
-| Loại | Pattern | Ví dụ |
-|------|---------|-------|
-| Components | PascalCase | `JobCard.tsx`, `HeroSection.tsx` |
-| Hooks | camelCase với `use` | `useJobFilters.ts` |
-| Stores | camelCase với `.store` | `auth.store.ts` |
-| Types | PascalCase với `Type`/`Interface` | `JobType`, `UserInterface` |
-| Utils | camelCase | `formatDate.ts` |
-| Constants | SCREAMING_SNAKE_CASE | `MAX_JOBS_PER_PAGE` |
-| i18n keys | snake_case | `welcome_title`, `find_job` |
+| Loại       | Pattern                           | Ví dụ                            |
+| ---------- | --------------------------------- | -------------------------------- |
+| Components | PascalCase                        | `JobCard.tsx`, `HeroSection.tsx` |
+| Hooks      | camelCase với `use`               | `useJobFilters.ts`               |
+| Stores     | camelCase với `.store`            | `auth.store.ts`                  |
+| Types      | PascalCase với `Type`/`Interface` | `JobType`, `UserInterface`       |
+| Utils      | camelCase                         | `formatDate.ts`                  |
+| Constants  | SCREAMING_SNAKE_CASE              | `MAX_JOBS_PER_PAGE`              |
+| i18n keys  | snake_case                        | `welcome_title`, `find_job`      |
