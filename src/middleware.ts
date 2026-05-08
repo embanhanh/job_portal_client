@@ -19,9 +19,10 @@ export default function middleware(request: NextRequest) {
   // 1. Chạy next-intl middleware để xử lý locale routing
   const response = intlMiddleware(request);
 
-  // 2. Auth logic — check HTTP-only cookie 'access_token'
-  // Middleware đọc được HTTP-only cookie từ request headers
-  const token = request.cookies.get('access_token')?.value;
+  // 2. Auth logic — check HTTP-only cookies
+  const hasAccessToken = request.cookies.has('access_token');
+  const hasRefreshToken = request.cookies.has('refresh_token');
+  const isAuthorized = hasAccessToken || hasRefreshToken;
 
   // Lấy locale từ URL
   const [, locale] = pathname.split('/');
@@ -37,7 +38,7 @@ export default function middleware(request: NextRequest) {
   const isEmployerRoute = pathWithoutLocale.startsWith('/employer');
   const isAdminRoute = pathWithoutLocale.startsWith('/admin');
 
-  if (token) {
+  if (isAuthorized) {
     // Đã đăng nhập → redirect ra khỏi login/register
     if (isAuthRoute) {
       return NextResponse.redirect(new URL(`/${validLocale}/`, request.url));

@@ -10,8 +10,8 @@ export const companySchema = z.object({
   address: z.string().optional(),
   industry: z.string().optional(),
   description: z.object({
-    vi: z.string().min(10, "description_too_short"),
-    en: z.string().min(10, "description_too_short"),
+    vi: z.string().trim().min(10, "description_too_short"),
+    en: z.string().trim().min(10, "description_too_short"),
   }),
   logo: z.instanceof(File).optional(),
   businessLicense: z.instanceof(File, { message: "business_license_required" }),

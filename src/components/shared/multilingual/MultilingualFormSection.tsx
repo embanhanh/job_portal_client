@@ -19,6 +19,7 @@ interface MultilingualFormSectionProps {
   onAutoTranslate?: (from: string, to: string) => Promise<void>;
   title?: string;
   description?: string;
+  tValidation: any;
 }
 
 export function MultilingualFormSection({
@@ -28,6 +29,7 @@ export function MultilingualFormSection({
   onAutoTranslate,
   title,
   description,
+  tValidation,
 }: MultilingualFormSectionProps) {
   const t = useTranslations('common.multilingual');
   const [isTranslating, setIsTranslating] = React.useState<Record<string, boolean>>({});
@@ -115,6 +117,7 @@ export function MultilingualFormSection({
               <TranslationFieldRenderer
                 fieldPath={`${translationsPath}.${currentLocale}`}
                 fields={currentFields}
+                tValidation={tValidation}
               />
             </div>
           );

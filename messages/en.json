@@ -113,7 +113,10 @@
       "subtitle": "Upgrade your account to start posting jobs and finding talent.",
       "success_message": "Company registration submitted! Please wait for admin approval.",
       "pending_notice": "Your company registration is being processed.",
+      "pending_desc": "We are reviewing your application. Please check back later.",
       "approved_notice": "Your company has been approved.",
+      "approved_desc": "Your account has been upgraded to Employer status.",
+      "view_profile_btn": "View details in Profile",
       "form": {
         "companyName_label": "Company Name",
         "companyName_placeholder": "Enter official company name...",
@@ -142,6 +145,13 @@
       "description_too_short": "Description must be at least 10 characters.",
       "business_license_required": "Please upload your business license.",
       "invalid_url": "Invalid URL format."
+    }
+  },
+  "profile": {
+    "navigation": {
+      "personal_info": "Personal Information",
+      "company_mgmt": "Company Management",
+      "settings": "Settings"
     }
   }
 }

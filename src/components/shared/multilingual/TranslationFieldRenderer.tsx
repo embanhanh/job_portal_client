@@ -7,10 +7,11 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { ServerAwareFormMessage } from '@/features/auth/components/ServerAwareFormMessage';
+import { useTranslations } from 'next-intl';
 
 export interface FieldConfig {
   name: string;
@@ -24,11 +25,13 @@ export interface FieldConfig {
 interface TranslationFieldRendererProps {
   fieldPath: string; // e.g., "translations.vi"
   fields: FieldConfig[];
+  tValidation: any;
 }
 
 export function TranslationFieldRenderer({
   fieldPath,
   fields,
+  tValidation,
 }: TranslationFieldRendererProps) {
   const { control } = useFormContext();
 
@@ -36,9 +39,9 @@ export function TranslationFieldRenderer({
     <div className="space-y-4">
       {fields.map((field) => (
         <FormField
-          key={field.name}
+          key={`${fieldPath}.${field.name}`}
           control={control}
-          name={`${fieldPath}.${field.name}`}
+          name={field.name ? `${fieldPath}.${field.name}` : fieldPath}
           render={({ field: formField }) => (
             <FormItem>
               <FormLabel>
@@ -58,7 +61,7 @@ export function TranslationFieldRenderer({
                   <Input placeholder={field.placeholder} {...formField} />
                 )}
               </FormControl>
-              <FormMessage />
+              <ServerAwareFormMessage tCommon={tValidation} />
             </FormItem>
           )}
         />
