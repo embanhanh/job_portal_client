@@ -113,7 +113,10 @@
       "subtitle": "Nâng cấp tài khoản của bạn để bắt đầu đăng tin tuyển dụng và tìm kiếm nhân tài.",
       "success_message": "Đăng ký doanh nghiệp thành công! Vui lòng chờ quản trị viên phê duyệt.",
       "pending_notice": "Yêu cầu đăng ký doanh nghiệp của bạn đang được xử lý.",
+      "pending_desc": "Chúng tôi đang xem xét hồ sơ của bạn. Vui lòng kiểm tra lại sau.",
       "approved_notice": "Doanh nghiệp của bạn đã được phê duyệt.",
+      "approved_desc": "Tài khoản của bạn đã được nâng cấp lên Nhà tuyển dụng.",
+      "view_profile_btn": "Xem chi tiết trong Hồ sơ",
       "form": {
         "companyName_label": "Tên doanh nghiệp",
         "companyName_placeholder": "Nhập tên chính thức của doanh nghiệp...",
@@ -142,6 +145,13 @@
       "description_too_short": "Mô tả phải có ít nhất 10 ký tự.",
       "business_license_required": "Vui lòng tải lên giấy phép kinh doanh.",
       "invalid_url": "Định dạng URL không hợp lệ."
+    }
+  },
+  "profile": {
+    "navigation": {
+      "personal_info": "Thông tin cá nhân",
+      "company_mgmt": "Quản lý doanh nghiệp",
+      "settings": "Cài đặt"
     }
   }
 }

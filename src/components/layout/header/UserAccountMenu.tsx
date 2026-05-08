@@ -18,8 +18,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useLogout } from "@/features/auth/hooks/useLogout";
-import { Role } from "@/features/auth";
-import { User } from "@/features/auth";
+import { Role } from "@/features/auth/enums/auth.enum";
+import { User } from "@/features/auth/types/auth.type";
 
 interface UserAccountMenuProps {
   user: User;
@@ -40,6 +40,7 @@ export function UserAccountMenu({ user }: UserAccountMenuProps) {
 
   const isAdmin = user.role === Role.ADMIN;
   const isEmployer = user.role === Role.EMPLOYER;
+  const isCandidate = user.role === Role.CANDIDATE;
 
   return (
     <DropdownMenu>
@@ -87,6 +88,17 @@ export function UserAccountMenu({ user }: UserAccountMenuProps) {
               <Building2 className="mr-3 h-4 w-4 opacity-70" />
               <span className="text-sm font-medium">
                 {tUserMenu("company_management")}
+              </span>
+            </DropdownMenuItem>
+          </Link>
+        )}
+
+        {isCandidate && (
+          <Link href="/employer-registration">
+            <DropdownMenuItem className="rounded-lg cursor-pointer py-2.5 transition-all hover:bg-primary/5 hover:text-primary">
+              <Building2 className="mr-3 h-4 w-4 opacity-70" />
+              <span className="text-sm font-medium">
+                {tUserMenu("company_registration")}
               </span>
             </DropdownMenuItem>
           </Link>

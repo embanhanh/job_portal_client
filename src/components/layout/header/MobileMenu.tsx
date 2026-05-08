@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/sheet";
 import { Link, useRouter, usePathname } from "@/i18n/routing";
 import { useMe } from "@/features/auth/hooks/useMe";
-import { Role } from "@/features/auth";
+import { Role } from "@/features/auth/enums/auth.enum";
 import { APP_LOCALES } from "@/config/locales";
 import { cn } from "@/lib/utils";
 

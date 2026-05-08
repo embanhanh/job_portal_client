@@ -18,8 +18,7 @@ interface CompanyGeneralInfoProps {
 
 export function CompanyGeneralInfo({ isPending }: CompanyGeneralInfoProps) {
   const t = useTranslations("company.registration.form");
-  const tValidation = useTranslations("auth.validation"); // Dùng chung schema validation
-  const tCommon = useTranslations("auth.validation"); // Dùng cho ServerAwareFormMessage
+  const tValidation = useTranslations("company.validation"); // Dùng chung schema validation
   const { control } = useFormContext();
 
   return (
@@ -29,7 +28,10 @@ export function CompanyGeneralInfo({ isPending }: CompanyGeneralInfoProps) {
         name="companyName"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>{t("companyName_label")} <span className="text-destructive">*</span></FormLabel>
+            <FormLabel>
+              {t("companyName_label")}{" "}
+              <span className="text-destructive">*</span>
+            </FormLabel>
             <FormControl>
               <Input
                 placeholder={t("companyName_placeholder")}
@@ -37,7 +39,7 @@ export function CompanyGeneralInfo({ isPending }: CompanyGeneralInfoProps) {
                 {...field}
               />
             </FormControl>
-            <ServerAwareFormMessage tCommon={tCommon} />
+            <ServerAwareFormMessage tCommon={tValidation} />
           </FormItem>
         )}
       />
@@ -55,7 +57,7 @@ export function CompanyGeneralInfo({ isPending }: CompanyGeneralInfoProps) {
                 {...field}
               />
             </FormControl>
-            <ServerAwareFormMessage tCommon={tCommon} />
+            <ServerAwareFormMessage tCommon={tValidation} />
           </FormItem>
         )}
       />
@@ -73,7 +75,7 @@ export function CompanyGeneralInfo({ isPending }: CompanyGeneralInfoProps) {
                 {...field}
               />
             </FormControl>
-            <ServerAwareFormMessage tCommon={tCommon} />
+            <ServerAwareFormMessage tCommon={tValidation} />
           </FormItem>
         )}
       />
@@ -91,7 +93,7 @@ export function CompanyGeneralInfo({ isPending }: CompanyGeneralInfoProps) {
                 {...field}
               />
             </FormControl>
-            <ServerAwareFormMessage tCommon={tCommon} />
+            <ServerAwareFormMessage tCommon={tValidation} />
           </FormItem>
         )}
       />

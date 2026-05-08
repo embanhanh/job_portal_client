@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { Loader2, Building2, Clock } from "lucide-react";
@@ -45,8 +44,8 @@ export default function EmployerRegistrationPage() {
                   </h1>
                   <p className="text-muted-foreground max-w-md mx-auto">
                     {company.status === CompanyStatus.PENDING
-                      ? "Chúng tôi đang xem xét hồ sơ của bạn. Vui lòng kiểm tra lại sau."
-                      : "Tài khoản của bạn đã được nâng cấp lên Nhà tuyển dụng."}
+                      ? t("pending_desc")
+                      : t("approved_desc")}
                   </p>
                 </div>
                 <Button
@@ -54,7 +53,7 @@ export default function EmployerRegistrationPage() {
                   variant="outline"
                   className="rounded-full px-8"
                 >
-                  Xem chi tiết trong Profile
+                  {t("view_profile_btn")}
                 </Button>
               </div>
             ) : (

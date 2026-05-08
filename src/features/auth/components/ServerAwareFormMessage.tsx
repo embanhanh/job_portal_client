@@ -14,10 +14,16 @@ export function ServerAwareFormMessage({ tCommon }: Props) {
 
   if (!error?.message) return null;
 
-  const message =
-    error.type === ERROR_TYPES.SERVER
-      ? error.message
-      : tCommon(error.message as ValidationKey);
+  const rawMessage = error.message as string;
+  let message = rawMessage;
+
+  if (error.type === ERROR_TYPES.SERVER) {
+    message = rawMessage;
+  } else {
+    const translated = tCommon(rawMessage as ValidationKey);
+    // Nếu tCommon trả về đúng cái key (nghĩa là không có bản dịch), hiển thị key để debug
+    message = translated === rawMessage ? `[Missing translation: ${rawMessage}]` : translated;
+  }
 
   return <FormMessage>{message}</FormMessage>;
 }

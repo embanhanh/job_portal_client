@@ -9,7 +9,13 @@ import { toast } from "sonner";
 
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { MultilingualFormSection } from "@/components/shared/multilingual/MultilingualFormSection";
 import { APP_LOCALES } from "@/config/locales";
 
@@ -23,6 +29,7 @@ import { ERROR_TYPES } from "@/features/auth/constants/auth.constant";
 export function EmployerRegistrationForm() {
   const t = useTranslations("company.registration");
   const tForm = useTranslations("company.registration.form");
+  const tValidation = useTranslations("company.validation");
   const router = useRouter();
   const { mutateAsync: createCompany, isPending } = useCreateCompany();
 
@@ -66,15 +73,15 @@ export function EmployerRegistrationForm() {
     }
   };
 
+  console.log(form.formState.errors);
+
   return (
-    <Card className="mx-auto max-w-4xl border-none shadow-none bg-transparent">
+    <Card className="mx-auto max-w-4xl border-none shadow-none bg-transparent p-4">
       <CardHeader className="px-0 pt-0">
         <CardTitle className="text-3xl font-bold tracking-tight Poppins">
           {t("title")}
         </CardTitle>
-        <CardDescription className="text-base">
-          {t("subtitle")}
-        </CardDescription>
+        <CardDescription className="text-base">{t("subtitle")}</CardDescription>
       </CardHeader>
       <CardContent className="px-0">
         <Form {...form}>
@@ -95,13 +102,15 @@ export function EmployerRegistrationForm() {
               <MultilingualFormSection
                 locales={APP_LOCALES}
                 translationsPath="description"
+                tValidation={tValidation}
                 fields={[
                   {
-                    name: "description", // Key con trong object description
+                    name: "", // Map directly to description.vi and description.en
                     label: tForm("description_label"),
                     type: "textarea",
                     placeholder: tForm("description_placeholder"),
                     rows: 5,
+                    required: true,
                   },
                 ]}
               />
@@ -117,12 +126,14 @@ export function EmployerRegistrationForm() {
                   name="logo"
                   label={tForm("logo_label")}
                   accept="image/*"
+                  tValidation={tValidation}
                 />
                 <CompanyFileUpload
                   name="businessLicense"
                   label={tForm("businessLicense_label")}
                   required
                   accept="image/*,.pdf"
+                  tValidation={tValidation}
                 />
               </div>
             </div>

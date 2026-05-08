@@ -1,7 +1,7 @@
 'use client'
 
 import { useMe } from '@/features/auth/hooks/useMe'
-import { Role } from '@/features/auth'
+import { Role } from '@/features/auth/enums/auth.enum'
 
 interface RoleGuardProps {
   roles: Role[]

@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { Building2, PlusCircle, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useMe } from "@/features/auth/hooks/useMe";
-import { Role } from "@/features/auth";
+import { Role } from "@/features/auth/enums/auth.enum";
 import { Link } from "@/i18n/routing";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { UserAccountMenu } from "./UserAccountMenu";
@@ -25,18 +25,6 @@ export function ClientHeaderActions() {
         <div className="h-9 w-24 animate-pulse rounded-full bg-muted/60"></div>
       ) : (
         <>
-          {role === Role.CANDIDATE && (
-            <Link href="/employer-registration">
-              <Button
-                variant="outline"
-                className="hidden lg:flex rounded-full px-5 font-semibold border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-all shadow-sm"
-              >
-                <Building2 className="mr-2 h-4 w-4" />
-                {tCommon("post_job")}
-              </Button>
-            </Link>
-          )}
-
           {role === Role.EMPLOYER && (
             <Link href="/employer/post-job">
               <Button className="hidden lg:flex rounded-full px-5 font-semibold shadow-md shadow-primary/20 hover:shadow-lg transition-all active:scale-95">

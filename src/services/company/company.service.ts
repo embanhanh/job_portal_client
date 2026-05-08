@@ -1,6 +1,7 @@
 import { http } from "@/lib/api/http";
 import { companyEndpoints } from "@/lib/api/endpoints";
-import { Company, CreateCompanyDto } from "@/features/company";
+import { Company, CreateCompanyDto } from "@/features/company/types/company.type";
+import { cleanObject } from "@/lib/utils";
 
 class CompanyService {
   /**
@@ -46,10 +47,12 @@ class CompanyService {
    */
   private convertToFormData(data: Record<string, any>): FormData {
     const formData = new FormData();
-    Object.entries(data).forEach(([key, value]) => {
+    const cleanedData = cleanObject(data);
+
+    Object.entries(cleanedData).forEach(([key, value]) => {
       if (value === undefined || value === null) return;
 
-      if (key === "description" && typeof value === "object") {
+      if (typeof value === "object" && !(value instanceof File)) {
         formData.append(key, JSON.stringify(value));
       } else if (value instanceof File) {
         formData.append(key, value);
