@@ -1,7 +1,6 @@
 // lib/api/interceptor.ts
-import { InternalAxiosRequestConfig } from "axios";
+import { AxiosInstance, InternalAxiosRequestConfig } from "axios";
 import { QueryClient } from "@tanstack/react-query";
-import { apiClient } from "./client";
 import { normalizeError } from "./error";
 import { refreshTokenFlow } from "./refresh";
 import { getRequestLocale } from "./locale";
@@ -33,51 +32,73 @@ const refreshState = {
   },
 };
 
-// --- Request Interceptor ---
-// Cookie access_token tự đính kèm nhờ withCredentials: true (không cần gắn header thủ công)
-apiClient.interceptors.request.use(
-  async (config) => {
-    config.headers["Accept-Language"] = await getRequestLocale();
-    return config;
-  },
-  (error) => Promise.reject(error),
-);
+export const initializeInterceptors = (instance: AxiosInstance) => {
+  // --- Request Interceptor ---
+  // Tự động đính kèm locale và cookies (nếu ở server)
+  instance.interceptors.request.use(
+    async (config) => {
+      // Gắn locale
+      config.headers["Accept-Language"] = await getRequestLocale();
 
-// --- Response Interceptor ---
-apiClient.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config as RetryableRequestConfig;
+      // Nếu ở server (Next.js Server Component), forward cookies thủ công
+      if (typeof window === "undefined") {
+        try {
+          const { cookies } = await import("next/headers");
+          const cookieStore = await cookies();
+          const cookieString = cookieStore.toString();
+          if (cookieString) {
+            config.headers["Cookie"] = cookieString;
+          }
+        } catch (error) {
+          // Có thể đang ở build time hoặc không có request context
+        }
+      }
 
-    if (error.response?.status !== 401 || originalRequest._retry) {
-      return Promise.reject(normalizeError(error));
-    }
+      return config;
+    },
+    (error) => Promise.reject(error),
+  );
 
-    // Đang refresh → queue request lại, chờ BE set cookie mới
-    if (refreshState.isRefreshing) {
-      return new Promise<void>((resolve, reject) => {
-        refreshState.failedQueue.push({ resolve, reject });
-      })
-        .then(() => apiClient(originalRequest))
-        .catch((err) => Promise.reject(normalizeError(err)));
-    }
+  // --- Response Interceptor ---
+  instance.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+      const originalRequest = error.config as RetryableRequestConfig;
 
-    originalRequest._retry = true;
-    refreshState.isRefreshing = true;
+      if (error.response?.status !== 401 || originalRequest._retry) {
+        return Promise.reject(normalizeError(error));
+      }
 
-    try {
-      // BE sẽ set cookie access_token mới — FE không cần làm gì thêm
-      await refreshTokenFlow();
-      refreshState.processQueue(null);
-      return apiClient(originalRequest);
-    } catch (refreshError) {
-      const normalizedError = normalizeError(refreshError);
-      refreshState.processQueue(normalizedError);
-      // Session hết hạn → clear cache
-      queryClientRef?.clear();
-      return Promise.reject(normalizedError);
-    } finally {
-      refreshState.isRefreshing = false;
-    }
-  },
-);
+      // Đang refresh → queue request lại, chờ BE set cookie mới
+      if (refreshState.isRefreshing) {
+        return new Promise<void>((resolve, reject) => {
+          refreshState.failedQueue.push({ resolve, reject });
+        })
+          .then(() => instance(originalRequest))
+          .catch((err) => Promise.reject(normalizeError(err)));
+      }
+
+      originalRequest._retry = true;
+      refreshState.isRefreshing = true;
+
+      try {
+        // BE sẽ set cookie access_token mới — FE không cần làm gì thêm
+        await refreshTokenFlow();
+        refreshState.processQueue(null);
+        return instance(originalRequest);
+      } catch (refreshError) {
+        const normalizedError = normalizeError(refreshError);
+        refreshState.processQueue(normalizedError);
+
+        // Session hết hạn → Cập nhật cache auth về null để UI thoát trạng thái loading
+        if (queryClientRef) {
+          queryClientRef.setQueryData(["me"], null);
+        }
+
+        return Promise.reject(normalizedError);
+      } finally {
+        refreshState.isRefreshing = false;
+      }
+    },
+  );
+};

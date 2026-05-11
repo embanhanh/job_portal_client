@@ -16,20 +16,20 @@ JobPortal là nền tảng tuyển dụng đa vai trò được thiết kế the
 
 ## 🛠 Tech Stack
 
-| Layer | Technology | Version |
-|-------|-----------|---------|
-| Framework | Next.js (App Router + Turbopack) | 16.2.4 |
-| UI Library | React | 19.2.4 |
-| Styling | Tailwind CSS (CSS-first, `@theme`) | 4.x |
-| Components | shadcn/ui (base-nova style) | 4.5.0 |
-| Icons | Lucide React | 1.11.0 |
-| State | Zustand | 5.0.12 |
-| Server State | TanStack Query | v5 |
-| Forms | React Hook Form | 7.74.0 |
-| Validation | Zod | 4.3.6 |
-| i18n | next-intl | 4.9.1 |
-| Optimizer | React Compiler (babel-plugin) | 1.0.0 |
-| Language | TypeScript | 5.x |
+| Layer        | Technology                         | Version |
+| ------------ | ---------------------------------- | ------- |
+| Framework    | Next.js (App Router + Turbopack)   | 16.2.4  |
+| UI Library   | React                              | 19.2.4  |
+| Styling      | Tailwind CSS (CSS-first, `@theme`) | 4.x     |
+| Components   | shadcn/ui (base-nova style)        | 4.5.0   |
+| Icons        | Lucide React                       | 1.11.0  |
+| State        | Zustand                            | 5.0.12  |
+| Server State | TanStack Query                     | v5      |
+| Forms        | React Hook Form                    | 7.74.0  |
+| Validation   | Zod                                | 4.3.6   |
+| i18n         | next-intl                          | 4.9.1   |
+| Optimizer    | React Compiler (babel-plugin)      | 1.0.0   |
+| Language     | TypeScript                         | 5.x     |
 
 ---
 
@@ -58,9 +58,15 @@ job-portal/
 │   │
 │   ├── features/                    # Feature-based modules (encapsulated)
 │   │   ├── auth/
+│   │   │   ├── components/
+│   │   │   ├── hooks/
+│   │   │   ├── schemas/
+│   │   │   ├── types/
+│   │   │   ├── enums/
+│   │   │   ├── constants/
 │   │   ├── jobs/
-│   │   ├── candidate/
-│   │   └── employer/
+│   │   ├── company/
+│   │   └── profile/
 │   │
 │   ├── i18n/
 │   │   ├── routing.ts               # Locale config (vi, en)
@@ -70,7 +76,12 @@ job-portal/
 │   ├── lib/
 │   │   └── utils.ts                 # cn() helper
 │   ├── utils/                       # Shared utilities
-│   └── middleware.ts                # next-intl routing middleware
+│   ├── middleware.ts                # next-intl routing middleware
+│   └── services/
+│       ├── auth
+│       ├── jobs
+│       ├── company
+│       └── user
 │
 ├── messages/
 │   ├── vi.json                      # Vietnamese translations
@@ -80,6 +91,7 @@ job-portal/
 │   ├── activeContext.md             # Current task focus
 │   ├── progress.md                  # Project progress tracker
 │   └── systemPatterns.md            # Architecture patterns & conventions
+│
 │
 ├── public/                          # Static assets
 ├── components.json                  # shadcn/ui config
@@ -94,13 +106,13 @@ job-portal/
 
 ### Colors (oklch)
 
-| Token | Value | Dùng cho |
-|-------|-------|----------|
-| `--primary` | `#FECE14` (Yellow-Gold) | CTA, highlight |
-| `--secondary` | `#000000` | Text chính |
-| `--success` | `#16A34A` | Trạng thái thành công |
-| `--warning` | `#D97706` | Cảnh báo |
-| `--danger` | `#DC2626` | Lỗi / huỷ |
+| Token         | Value                   | Dùng cho              |
+| ------------- | ----------------------- | --------------------- |
+| `--primary`   | `#FECE14` (Yellow-Gold) | CTA, highlight        |
+| `--secondary` | `#000000`               | Text chính            |
+| `--success`   | `#16A34A`               | Trạng thái thành công |
+| `--warning`   | `#D97706`               | Cảnh báo              |
+| `--danger`    | `#DC2626`               | Lỗi / huỷ             |
 
 ### Typography
 
@@ -116,10 +128,10 @@ job-portal/
 
 ## 🌐 Internationalization
 
-| Locale | URL | Default |
-|--------|-----|---------|
-| Tiếng Việt | `/vi/...` | ✅ |
-| English | `/en/...` | |
+| Locale     | URL       | Default |
+| ---------- | --------- | ------- |
+| Tiếng Việt | `/vi/...` | ✅      |
+| English    | `/en/...` |         |
 
 Auto-redirect: `/` → `/vi`
 
@@ -168,7 +180,7 @@ import { Main, Section, Container, Grid } from "@/components/craft";
       <Grid cols={3}>{children}</Grid>
     </Container>
   </Section>
-</Main>
+</Main>;
 ```
 
 ---

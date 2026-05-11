@@ -5,21 +5,19 @@ import { ReactNode, useState, useEffect } from "react";
 import { setupInterceptors } from "@/lib/api/interceptor";
 
 export default function Providers({ children }: { children: ReactNode }) {
-  const [queryClient] = useState(
-    () =>
-      new QueryClient({
-        defaultOptions: {
-          queries: {
-            staleTime: 60 * 1000,
-          },
+  const [queryClient] = useState(() => {
+    const client = new QueryClient({
+      defaultOptions: {
+        queries: {
+          staleTime: 60 * 1000,
         },
-      })
-  );
+      },
+    });
 
-  useEffect(() => {
-    // Inject queryClient into interceptor to handle query invalidation on logout/401
-    setupInterceptors(queryClient);
-  }, [queryClient]);
+    // Inject queryClient into interceptor IMMEDIATELY
+    setupInterceptors(client);
+    return client;
+  });
 
   return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
 }

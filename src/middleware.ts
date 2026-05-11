@@ -16,39 +16,67 @@ export default function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // 1. Chạy next-intl middleware để xử lý locale routing
-  const response = intlMiddleware(request);
-
   // 2. Auth logic — check HTTP-only cookies
   const hasAccessToken = request.cookies.has('access_token');
   const hasRefreshToken = request.cookies.has('refresh_token');
   const isAuthorized = hasAccessToken || hasRefreshToken;
 
-  // Lấy locale từ URL
+  const response = intlMiddleware(request);
+
+  // 3. Auth Hint cho Client (Non-HTTP-Only)
+  // Giúp Client quyết định có gọi API /me hay không mà không cần thử sai
+  if (isAuthorized) {
+    response.cookies.set('has_session', 'true', {
+      httpOnly: false,
+      path: '/',
+      sameSite: 'lax',
+    });
+  } else {
+    response.cookies.delete('has_session');
+  }
+
+  // 4. Redirect logic
   const [, locale] = pathname.split('/');
   const validLocale = routing.locales.includes(locale as "vi" | "en")
     ? locale
     : routing.defaultLocale;
 
-  // Normalize pathname bỏ locale prefix
-  const pathWithoutLocale = pathname.replace(`/${locale}`, '') || '/';
+  const pathWithoutLocale = pathname.startsWith(`/${validLocale}`)
+    ? pathname.slice(validLocale.length + 1) || '/'
+    : pathname;
 
   const isAuthRoute = pathWithoutLocale.startsWith('/login') ||
     pathWithoutLocale.startsWith('/register');
-  const isEmployerRoute = pathWithoutLocale.startsWith('/employer');
-  const isAdminRoute = pathWithoutLocale.startsWith('/admin');
+  
+  const isProtectedRoute = 
+    pathWithoutLocale.startsWith('/profile') ||
+    pathWithoutLocale.startsWith('/employer-registration') ||
+    pathWithoutLocale.startsWith('/employer') ||
+    pathWithoutLocale.startsWith('/admin');
 
   if (isAuthorized) {
-    // Đã đăng nhập → redirect ra khỏi login/register
+    // Nếu đã đăng nhập mà truy cập trang auth thì redirect về home
     if (isAuthRoute) {
-      return NextResponse.redirect(new URL(`/${validLocale}/`, request.url));
+      const homeUrl = new URL(`/${validLocale}`, request.url);
+      const redirectResponse = NextResponse.redirect(homeUrl);
+      // Giữ lại cookie has_session khi redirect
+      redirectResponse.cookies.set('has_session', 'true', {
+        httpOnly: false,
+        path: '/',
+        sameSite: 'lax',
+      });
+      return redirectResponse;
     }
-    // Employer/Admin route: không redirect ở middleware theo role
-    // → Client-side RoleGuard sẽ hiển thị Forbidden nếu không đủ quyền
   } else {
-    // Chưa đăng nhập → bảo vệ các route cần auth
-    if (isEmployerRoute || isAdminRoute) {
-      return NextResponse.redirect(new URL(`/${validLocale}/login`, request.url));
+    // Nếu chưa đăng nhập mà truy cập route bảo vệ thì redirect về login
+    if (isProtectedRoute) {
+      const loginUrl = new URL(`/${validLocale}/login`, request.url);
+      // Lưu lại URL hiện tại để quay lại sau khi login (tùy chọn)
+      loginUrl.searchParams.set('callbackUrl', pathname);
+      
+      const redirectResponse = NextResponse.redirect(loginUrl);
+      redirectResponse.cookies.delete('has_session');
+      return redirectResponse;
     }
   }
 

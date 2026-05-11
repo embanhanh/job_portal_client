@@ -67,3 +67,22 @@ export function formatCurrency(amount?: number): string {
     maximumFractionDigits: 0,
   }).format(amount);
 }
+
+/**
+ * Lấy tên file từ URL (đặc biệt là Cloudinary URL).
+ * Loại bỏ các query params và versioning.
+ */
+export function getFileNameFromUrl(url?: string): string {
+  if (!url) return "";
+  try {
+    const decodedUrl = decodeURIComponent(url);
+    const fileNameWithQuery = decodedUrl.split("/").pop() || "";
+    const fileName = fileNameWithQuery.split("?")[0];
+    
+    // Nếu là Cloudinary, nó thường có version (v1234567890) ở phía trước, 
+    // nhưng split("/").pop() đã lấy được phần cuối cùng rồi.
+    return fileName;
+  } catch (error) {
+    return "";
+  }
+}
