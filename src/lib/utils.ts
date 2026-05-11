@@ -40,3 +40,30 @@ export function cleanObject<T extends Record<string, any>>(obj: T): Partial<T> {
   return newObj;
 }
 
+
+/**
+ * Lấy giá trị theo ngôn ngữ hiện tại từ object đa ngôn ngữ.
+ * Ưu tiên ngôn ngữ hiện tại, sau đó là tiếng Việt, cuối cùng là chuỗi rỗng.
+ */
+export function getLocalizedValue<T extends { vi: string; en?: string }>(
+  value: T | string | undefined | null,
+  locale: string
+): string {
+  if (!value) return "";
+  if (typeof value === "string") return value;
+  
+  const localized = value as Record<string, string>;
+  return localized[locale] || localized["vi"] || "";
+}
+
+/**
+ * Format tiền tệ (VND).
+ */
+export function formatCurrency(amount?: number): string {
+  if (amount === undefined || amount === null) return "Thỏa thuận";
+  return new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+    maximumFractionDigits: 0,
+  }).format(amount);
+}

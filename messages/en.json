@@ -90,6 +90,7 @@
     }
   },
   "common": {
+    "back": "Back",
     "language_vi": "Vietnamese",
     "language_en": "English",
     "language_switch": "Vietnamese / English",
@@ -152,6 +153,65 @@
       "personal_info": "Personal Information",
       "company_mgmt": "Company Management",
       "settings": "Settings"
+    }
+  },
+  "jobs": {
+    "common": {
+      "on_site": "On-site",
+      "remote": "Remote",
+      "salary_negotiable": "Negotiable",
+      "just_now": "Just now",
+      "category": "Categories",
+      "location": "Location",
+      "salary": "Salary",
+      "type": "Job Type",
+      "types": {
+        "full_time": "Full-time",
+        "part_time": "Part-time",
+        "contract": "Contract",
+        "internship": "Internship",
+        "remote": "Remote"
+      }
+    },
+    "search": {
+      "placeholder": "Search job titles, keywords...",
+      "submit": "Search"
+    },
+    "filters": {
+      "title": "Filters",
+      "reset": "Reset Filters",
+      "category": "Industry",
+      "all_categories": "All Industries",
+      "location": "Location",
+      "all_locations": "All Locations",
+      "type": "Job Type",
+      "salary": "Salary Range"
+    },
+    "results": {
+      "found": "Found {count} jobs",
+      "subtitle": "Discover thousands of career opportunities from top companies.",
+      "error": "An error occurred while loading data. Please try again later.",
+      "page_info": "Page {page} of {lastPage}",
+      "empty_title": "No matching jobs found",
+      "empty_desc": "Try changing your keywords or filters to see more results."
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "detail": {
+      "apply_now": "Apply Now",
+      "description": "Job Description",
+      "requirements": "Requirements",
+      "benefits": "Benefits",
+      "job_summary": "Job Summary",
+      "expired_at": "Expired At",
+      "skills": "Required Skills",
+      "about_company": "About Company",
+      "view_company_profile": "View Company Profile",
+      "no_description": "Information is being updated...",
+      "no_requirements": "Information is being updated...",
+      "no_benefits": "Information is being updated..."
     }
   }
 }

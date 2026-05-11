@@ -90,6 +90,7 @@
     }
   },
   "common": {
+    "back": "Quay lại",
     "language_vi": "Tiếng Việt",
     "language_en": "English",
     "language_switch": "Tiếng Việt / English",
@@ -152,6 +153,65 @@
       "personal_info": "Thông tin cá nhân",
       "company_mgmt": "Quản lý doanh nghiệp",
       "settings": "Cài đặt"
+    }
+  },
+  "jobs": {
+    "common": {
+      "on_site": "Tại văn phòng",
+      "remote": "Từ xa",
+      "salary_negotiable": "Thỏa thuận",
+      "just_now": "Vừa xong",
+      "category": "Ngành nghề",
+      "location": "Địa điểm",
+      "salary": "Lương",
+      "type": "Loại hình",
+      "types": {
+        "full_time": "Toàn thời gian",
+        "part_time": "Bán thời gian",
+        "contract": "Hợp đồng",
+        "internship": "Thực tập",
+        "remote": "Từ xa"
+      }
+    },
+    "search": {
+      "placeholder": "Tìm kiếm tiêu đề công việc, từ khóa...",
+      "submit": "Tìm kiếm"
+    },
+    "filters": {
+      "title": "Bộ lọc",
+      "reset": "Xóa bộ lọc",
+      "category": "Ngành nghề",
+      "all_categories": "Tất cả ngành nghề",
+      "location": "Địa điểm",
+      "all_locations": "Tất cả địa điểm",
+      "type": "Loại hình",
+      "salary": "Mức lương"
+    },
+    "results": {
+      "found": "Tìm thấy {count} việc làm",
+      "subtitle": "Khám phá hàng ngàn cơ hội nghề nghiệp từ các công ty hàng đầu.",
+      "error": "Đã có lỗi xảy ra khi tải dữ liệu. Vui lòng thử lại sau.",
+      "page_info": "Trang {page} / {lastPage}",
+      "empty_title": "Không tìm thấy việc làm phù hợp",
+      "empty_desc": "Hãy thử thay đổi từ khóa hoặc bộ lọc để tìm thấy nhiều kết quả hơn."
+    },
+    "pagination": {
+      "previous": "Trước",
+      "next": "Sau"
+    },
+    "detail": {
+      "apply_now": "Ứng tuyển ngay",
+      "description": "Mô tả công việc",
+      "requirements": "Yêu cầu ứng viên",
+      "benefits": "Quyền lợi",
+      "job_summary": "Tóm tắt công việc",
+      "expired_at": "Hạn nộp hồ sơ",
+      "skills": "Kỹ năng",
+      "about_company": "Về công ty",
+      "view_company_profile": "Xem trang công ty",
+      "no_description": "Thông tin đang được cập nhật...",
+      "no_requirements": "Thông tin đang được cập nhật...",
+      "no_benefits": "Thông tin đang được cập nhật..."
     }
   }
 }
