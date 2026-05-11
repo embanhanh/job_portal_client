@@ -1,14 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
 import { jobService } from "@/services/job/job.service";
+
 import { JobFilter } from "../types/job.type";
 
-export const useJobs = (filters?: JobFilter) => {
+export function useJobs(filters: JobFilter) {
   return useQuery({
     queryKey: ["jobs", filters],
-    queryFn: async () => {
-      const response = await jobService.getJobs(filters);
-      return response;
-    },
-    staleTime: 5 * 60 * 1000,
+    queryFn: () => jobService.getJobs(filters),
+    placeholderData: (previousData) => previousData, // Smooth transitions between pages
   });
-};
+}
+
+export function useJobDetail(id: string) {
+  return useQuery({
+    queryKey: ["job", id],
+    queryFn: () => jobService.getJobById(id),
+    enabled: !!id,
+  });
+}
