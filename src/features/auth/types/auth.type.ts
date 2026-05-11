@@ -1,4 +1,6 @@
+import { Company } from "@/features/company";
 import { Role } from "../enums/auth.enum";
+import type { Candidate } from "@/features/candidate/types/candidate.type";
 
 export interface User {
   id: string;
@@ -8,6 +10,8 @@ export interface User {
   avatar?: string;
   phone?: string;
   status?: string;
+  candidate: Candidate;
+  company?: Company; // Will update this when company types are ready
 }
 
 /**

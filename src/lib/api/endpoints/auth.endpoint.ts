@@ -3,5 +3,6 @@ export const AUTH_ENDPOINTS = {
   REGISTER: "/auth/register",
   REFRESH: "/auth/refresh",
   ME: "/auth/me",
-  LOGOUT: "/auth/logout", // Assuming there is a logout endpoint if needed
+  LOGOUT: "/auth/logout",
+  PROFILE: "/auth/profile",
 } as const;
