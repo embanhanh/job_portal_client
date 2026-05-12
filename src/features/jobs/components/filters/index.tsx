@@ -21,7 +21,7 @@ export function JobFilterSidebar() {
   const searchParams = useSearchParams();
 
   const activeCategoryId = searchParams.get("categoryId") || "";
-  const activeLocationId = searchParams.get("locationId") || "";
+  const activeLocation = searchParams.get("location") || "";
   const activeTypes = searchParams.get("type")?.split(",") || [];
   const salaryMin = Number(searchParams.get("salaryMin")) || 0;
   const salaryMax = Number(searchParams.get("salaryMax")) || 50000000;
@@ -62,7 +62,7 @@ export function JobFilterSidebar() {
           onFilterChange={handleFilterChange}
         />
         <FilterLocation
-          activeLocationId={activeLocationId}
+          activeLocation={activeLocation}
           onFilterChange={handleFilterChange}
         />
         <FilterType

@@ -19,7 +19,7 @@ export function JobCard({ job, className }: JobCardProps) {
 
   const title = getLocalizedValue(job.title, locale);
   const companyName = job.company?.companyName || "";
-  const locationName = job.location?.name || "";
+  const locationName = job.location || "";
   const salaryRange =
     job.salaryMin && job.salaryMax
       ? `${formatCurrency(job.salaryMin)} - ${formatCurrency(job.salaryMax)}`

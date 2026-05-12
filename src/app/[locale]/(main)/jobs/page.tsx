@@ -51,7 +51,7 @@ export default async function JobsPage({
     limit: 10,
     q: sp.q || undefined,
     categoryId: sp.categoryId || undefined,
-    locationId: sp.locationId || undefined,
+    location: sp.location || undefined,
     type: parseJobType(sp.type),
     salaryMin: sp.salaryMin ? Number(sp.salaryMin) : undefined,
     salaryMax: sp.salaryMax ? Number(sp.salaryMax) : undefined,

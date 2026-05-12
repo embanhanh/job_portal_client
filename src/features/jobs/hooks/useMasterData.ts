@@ -10,13 +10,6 @@ export function useCategories() {
   });
 }
 
-export function useLocations() {
-  return useQuery({
-    queryKey: ["locations"],
-    queryFn: () => masterService.getLocations(),
-    staleTime: 1000 * 60 * 60, // 1 hour
-  });
-}
 
 export function useSkills() {
   return useQuery({
