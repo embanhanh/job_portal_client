@@ -22,7 +22,7 @@ import { APP_LOCALES } from "@/config/locales";
 import { CompanyInput, companySchema } from "../schemas/company.schema";
 import { useCreateCompany } from "../hooks/useCompany";
 import { CompanyGeneralInfo } from "./sections/CompanyGeneralInfo";
-import { CompanyFileUpload } from "./fields/CompanyFileUpload";
+import { FileUpload } from "@/components/shared/FileUpload";
 import { ApiException } from "@/lib/api/types";
 import { ERROR_TYPES } from "@/features/auth/constants/auth.constant";
 
@@ -122,13 +122,13 @@ export function EmployerRegistrationForm() {
                 3. {tForm("businessLicense_label")} & Logo
               </h3>
               <div className="grid gap-6 md:grid-cols-2">
-                <CompanyFileUpload
+                <FileUpload
                   name="logo"
                   label={tForm("logo_label")}
                   accept="image/*"
                   tValidation={tValidation}
                 />
-                <CompanyFileUpload
+                <FileUpload
                   name="businessLicense"
                   label={tForm("businessLicense_label")}
                   required

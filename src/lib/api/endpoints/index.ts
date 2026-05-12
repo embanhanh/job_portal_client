@@ -4,4 +4,5 @@ export * from "./user.endpoint";
 export * from "./company.endpoint";
 export * from "./master.endpoint";
 export * from "./candidate.endpoint";
+export * from "./application.endpoint";
 

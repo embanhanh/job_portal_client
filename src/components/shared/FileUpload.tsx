@@ -11,31 +11,39 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
+import { cn, formatFileSize } from "@/lib/utils";
 import { ServerAwareFormMessage } from "@/features/auth/components/ServerAwareFormMessage";
-import { cn } from "@/lib/utils";
+import { FormMessage } from "@/components/ui/form";
 
-interface CompanyFileUploadProps {
+interface FileUploadProps {
   name: string;
-  label: string;
+  label?: string;
   accept?: string;
   required?: boolean;
-  tValidation: any;
+  maxSizeMB?: number;
+  className?: string;
+  showPreview?: boolean;
+  tValidation?: any;
 }
 
-export function CompanyFileUpload({
+export function FileUpload({
   name,
   label,
   accept = "image/*,.pdf",
   required = false,
+  maxSizeMB = 5,
+  className,
+  showPreview = true,
   tValidation,
-}: CompanyFileUploadProps) {
-  const t = useTranslations("company.registration.form");
+}: FileUploadProps) {
+  const t = useTranslations("common.file_upload");
   const { control } = useFormContext();
+
   return (
     <FormField
       control={control}
       name={name}
-      render={({ field }) => {
+      render={({ field, fieldState }) => {
         const fileValue = field.value as File | undefined;
 
         // Internal effect for preview handled inside render to stay in sync with field value
@@ -45,6 +53,7 @@ export function CompanyFileUpload({
         // eslint-disable-next-line react-hooks/rules-of-hooks
         React.useEffect(() => {
           if (
+            showPreview &&
             fileValue &&
             fileValue instanceof File &&
             fileValue.type.startsWith("image/")
@@ -55,7 +64,7 @@ export function CompanyFileUpload({
           } else {
             setPreview(null);
           }
-        }, [fileValue]);
+        }, [fileValue, showPreview]);
 
         const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
           const selectedFile = e.target.files?.[0];
@@ -64,21 +73,28 @@ export function CompanyFileUpload({
           }
         };
 
-        const handleRemove = () => {
+        const handleRemove = (e: React.MouseEvent) => {
+          e.preventDefault();
+          e.stopPropagation();
           field.onChange(undefined);
         };
 
+        const formatLabel = accept.replace(/\./g, "").toUpperCase();
+
         return (
-          <FormItem>
-            <FormLabel className="flex items-center gap-1">
-              {label}
-              {required && <span className="text-destructive">*</span>}
-            </FormLabel>
+          <FormItem className={className}>
+            {label && (
+              <FormLabel className="flex items-center gap-1">
+                {label}
+                {required && <span className="text-destructive">*</span>}
+              </FormLabel>
+            )}
             <FormControl>
               <div
                 className={cn(
                   "relative flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-muted-foreground/25 bg-muted/5 p-6 transition-all hover:bg-muted/10",
                   fileValue && "border-primary/50 bg-primary/5",
+                  fieldState.error && "border-destructive/50 bg-destructive/5"
                 )}
               >
                 {fileValue ? (
@@ -99,27 +115,33 @@ export function CompanyFileUpload({
                         {fileValue.name}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        {(fileValue.size / 1024 / 1024).toFixed(2)} MB
+                        {formatFileSize(fileValue.size)}
                       </p>
                     </div>
                     <button
                       type="button"
                       onClick={handleRemove}
+                      title={t("remove")}
                       className="rounded-full p-1.5 hover:bg-destructive/10 hover:text-destructive transition-colors"
                     >
                       <X className="h-5 w-5" />
                     </button>
                   </div>
                 ) : (
-                  <label className="flex cursor-pointer flex-col items-center justify-center gap-2">
+                  <label className="flex w-full cursor-pointer flex-col items-center justify-center gap-2">
                     <div className="rounded-full bg-primary/10 p-3 text-primary">
                       <Upload className="h-6 w-6" />
                     </div>
                     <div className="text-center">
                       <p className="text-sm font-medium">{t("upload_hint")}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {accept.replace(/\./g, "").toUpperCase()}
-                      </p>
+                      <div className="flex flex-col gap-0.5 mt-1">
+                        <p className="text-xs text-muted-foreground">
+                          {t("format", { format: formatLabel })}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {t("max_size", { size: maxSizeMB })}
+                        </p>
+                      </div>
                     </div>
                     <input
                       type="file"
@@ -131,7 +153,11 @@ export function CompanyFileUpload({
                 )}
               </div>
             </FormControl>
-            <ServerAwareFormMessage tCommon={tValidation} />
+            {tValidation ? (
+              <ServerAwareFormMessage tCommon={tValidation} />
+            ) : (
+              <FormMessage />
+            )}
           </FormItem>
         );
       }}
