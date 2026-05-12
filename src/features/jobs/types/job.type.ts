@@ -15,13 +15,6 @@ export interface Category {
   parentId?: string | null;
 }
 
-export interface Location {
-  id: string;
-  name: string;
-  type?: "PROVINCE" | "DISTRICT" | "WARD";
-  parentId?: string | null;
-}
-
 export interface Skill {
   id: string;
   name: string;
@@ -50,7 +43,7 @@ export interface Job {
   status: "pending" | "open" | "closed" | "expired";
   company: JobCompany;
   category?: Category;
-  location?: Location;
+  location?: string;
   jobSkills?: Array<{
     id: string;
     skill: Skill;
@@ -65,7 +58,7 @@ export interface JobFilter {
   limit?: number;
   q?: string;
   categoryId?: string;
-  locationId?: string;
+  location?: string;
   type?: string; // string or comma-separated string
   salaryMin?: number;
   salaryMax?: number;

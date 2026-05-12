@@ -2,6 +2,7 @@ import { useTranslations } from "next-intl";
 import { Briefcase, PenLine } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Main, Section, Container } from "@/components/craft";
+import { HomeSearch } from "@/features/jobs/components/HomeSearch";
 
 export default function HomePage() {
   const t = useTranslations("hero");
@@ -39,25 +40,9 @@ export default function HomePage() {
             {t("welcome_desc")}
           </p>
 
-          {/* CTA Buttons */}
-          <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-            <Button
-              size="lg"
-              className="gap-2 px-8 text-base font-semibold"
-              aria-label={t("find_job")}
-            >
-              <Briefcase className="h-5 w-5" />
-              {t("find_job")}
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="gap-2 px-8 text-base font-semibold"
-              aria-label={t("post_job")}
-            >
-              <PenLine className="h-5 w-5" />
-              {t("post_job")}
-            </Button>
+          {/* Search Component */}
+          <div className="mt-10 w-full">
+            <HomeSearch />
           </div>
 
           {/* Stats */}
@@ -77,6 +62,87 @@ export default function HomePage() {
                 </span>
               </div>
             ))}
+          </div>
+        </Container>
+      </Section>
+
+      {/* ─── Trusted By Section ─── */}
+      <Section className="py-12 bg-muted/30 border-y">
+        <Container>
+          <p className="text-center text-sm font-medium text-muted-foreground mb-8">
+            Được tin tưởng bởi các công ty công nghệ hàng đầu
+          </p>
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+            {/* Placeholder for logos */}
+            <div className="text-xl font-bold">Google</div>
+            <div className="text-xl font-bold">Microsoft</div>
+            <div className="text-xl font-bold">Amazon</div>
+            <div className="text-xl font-bold">Meta</div>
+            <div className="text-xl font-bold">Netflix</div>
+          </div>
+        </Container>
+      </Section>
+
+      {/* ─── Popular Categories Section ─── */}
+      <Section className="py-20">
+        <Container>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">Ngành Nghề Nổi Bật</h2>
+            <p className="text-muted-foreground">Khám phá các cơ hội nghề nghiệp theo ngành nghề phổ biến nhất</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { title: "Công Nghệ Thông Tin", count: "1,234", icon: "💻" },
+              { title: "Marketing", count: "856", icon: "📈" },
+              { title: "Thiết Kế", count: "642", icon: "🎨" },
+              { title: "Kinh Doanh", count: "951", icon: "🤝" },
+              { title: "Tài Chính", count: "432", icon: "💰" },
+              { title: "Nhân Sự", count: "215", icon: "👥" },
+              { title: "Giáo Dục", count: "348", icon: "📚" },
+              { title: "Y Tế", count: "512", icon: "⚕️" },
+            ].map((cat, i) => (
+              <div key={i} className="p-6 rounded-2xl border bg-card hover:border-primary hover:shadow-lg transition-all cursor-pointer group">
+                <div className="text-4xl mb-4 group-hover:scale-110 transition-transform">{cat.icon}</div>
+                <h3 className="font-semibold text-lg mb-1">{cat.title}</h3>
+                <p className="text-sm text-muted-foreground">{cat.count} việc làm</p>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      {/* ─── Featured Jobs Section ─── */}
+      <Section className="py-20 bg-muted/10">
+        <Container>
+          <div className="flex items-end justify-between mb-12">
+            <div>
+              <h2 className="text-3xl font-bold mb-4">Việc Làm Nổi Bật</h2>
+              <p className="text-muted-foreground">Các cơ hội hấp dẫn mới nhất dành cho bạn</p>
+            </div>
+            <Button variant="outline" className="hidden md:flex">Xem tất cả</Button>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {[1, 2, 3, 4].map((job) => (
+              <div key={job} className="p-6 rounded-2xl border bg-card flex gap-4 hover:border-primary hover:shadow-md transition-all">
+                <div className="w-16 h-16 rounded-xl bg-muted flex items-center justify-center flex-shrink-0">
+                  <Briefcase className="h-8 w-8 text-muted-foreground/50" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-lg line-clamp-1 hover:text-primary cursor-pointer">
+                    Senior Fullstack Developer (React/Nodejs)
+                  </h3>
+                  <p className="text-primary font-medium mt-1">20,000,000 - 40,000,000 VND</p>
+                  <div className="flex flex-wrap gap-2 mt-3">
+                    <span className="px-2 py-1 bg-muted rounded-md text-xs font-medium">Hồ Chí Minh</span>
+                    <span className="px-2 py-1 bg-muted rounded-md text-xs font-medium">Remote</span>
+                    <span className="px-2 py-1 bg-primary/10 text-primary rounded-md text-xs font-medium">Full-time</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-8 text-center md:hidden">
+            <Button variant="outline" className="w-full">Xem tất cả việc làm</Button>
           </div>
         </Container>
       </Section>

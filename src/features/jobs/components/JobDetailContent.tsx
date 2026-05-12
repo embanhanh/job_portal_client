@@ -1,5 +1,4 @@
 "use client";
-
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import {
@@ -8,19 +7,17 @@ import {
   Clock,
   DollarSign,
   Briefcase,
-  Send,
   Share2,
-  ShieldCheck,
-  CheckCircle2,
   Globe,
   Calendar,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Job } from "../types/job.type";
-import { cn, formatCurrency, getLocalizedValue } from "@/lib/utils";
-import { toast } from "sonner";
+import { formatCurrency, getLocalizedValue } from "@/lib/utils";
 import { Container } from "@/components/craft";
+import { ApplyButton } from "@/features/applications/components/ApplyButton";
+import { SavedJobButton } from "./SavedJobButton";
 
 interface JobDetailContentProps {
   job: Job;
@@ -45,7 +42,7 @@ export function JobDetailContent({ job }: JobDetailContentProps) {
   return (
     <Container className="space-y-8">
       {/* Header Card */}
-      <div className="bg-white border rounded-2xl p-6 md:p-8 shadow-sm">
+      <div className="bg-card border border-border rounded-2xl p-6 md:p-8 shadow-sm">
         <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
           <div className="relative h-20 w-20 rounded-2xl border bg-muted/30 shrink-0 overflow-hidden flex items-center justify-center shadow-inner">
             {company.logoUrl ? (
@@ -61,7 +58,7 @@ export function JobDetailContent({ job }: JobDetailContentProps) {
           </div>
 
           <div className="flex-1 space-y-2">
-            <h1 className="text-2xl md:text-3xl font-extrabold Poppins text-foreground">
+            <h1 className="text-2xl md:text-3xl font-extrabold font-heading text-foreground">
               {title}
             </h1>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-muted-foreground font-medium">
@@ -71,7 +68,7 @@ export function JobDetailContent({ job }: JobDetailContentProps) {
               </span>
               <span className="flex items-center gap-1">
                 <MapPin className="h-4 w-4" />
-                {job.location?.name || t("remote")}
+                {job.location || t("remote")}
               </span>
               <span className="flex items-center gap-1">
                 <Clock className="h-4 w-4" />
@@ -83,18 +80,8 @@ export function JobDetailContent({ job }: JobDetailContentProps) {
           </div>
 
           <div className="flex gap-3 w-full md:w-auto">
-            <Button
-              size="lg"
-              onClick={() =>
-                toast.info("Tính năng ứng tuyển đang được phát triển!")
-              }
-            >
-              <Send className="mr-2 h-4 w-4" />
-              {detailT("apply_now")}
-            </Button>
-            <Button variant="outline" size="lg" className="px-4">
-              <Share2 className="h-4 w-4" />
-            </Button>
+            <ApplyButton job={job} />
+            <SavedJobButton jobId={job.id} />
           </div>
         </div>
       </div>
@@ -103,8 +90,8 @@ export function JobDetailContent({ job }: JobDetailContentProps) {
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-8">
           {/* Description Section */}
-          <section className="bg-white border rounded-2xl p-6 md:p-8 space-y-4">
-            <h2 className="text-xl font-bold border-l-4 border-primary pl-4">
+          <section className="bg-card border border-border rounded-2xl p-6 md:p-8 space-y-4">
+            <h2 className="text-xl font-bold border-l-4 border-primary pl-4 font-heading">
               {detailT("description")}
             </h2>
             <div className="prose prose-slate max-w-none text-muted-foreground leading-relaxed whitespace-pre-wrap">
@@ -113,8 +100,8 @@ export function JobDetailContent({ job }: JobDetailContentProps) {
           </section>
 
           {/* Requirements Section */}
-          <section className="bg-white border rounded-2xl p-6 md:p-8 space-y-4">
-            <h2 className="text-xl font-bold border-l-4 border-primary pl-4">
+          <section className="bg-card border border-border rounded-2xl p-6 md:p-8 space-y-4">
+            <h2 className="text-xl font-bold border-l-4 border-primary pl-4 font-heading">
               {detailT("requirements")}
             </h2>
             <div className="prose prose-slate max-w-none text-muted-foreground leading-relaxed whitespace-pre-wrap">
@@ -123,8 +110,8 @@ export function JobDetailContent({ job }: JobDetailContentProps) {
           </section>
 
           {/* Benefits Section */}
-          <section className="bg-white border rounded-2xl p-6 md:p-8 space-y-4">
-            <h2 className="text-xl font-bold border-l-4 border-primary pl-4">
+          <section className="bg-card border border-border rounded-2xl p-6 md:p-8 space-y-4">
+            <h2 className="text-xl font-bold border-l-4 border-primary pl-4 font-heading">
               {detailT("benefits")}
             </h2>
             <div className="prose prose-slate max-w-none text-muted-foreground leading-relaxed whitespace-pre-wrap">
@@ -135,8 +122,8 @@ export function JobDetailContent({ job }: JobDetailContentProps) {
 
         {/* Sidebar Info */}
         <div className="space-y-6">
-          <section className="bg-white border rounded-2xl p-6 space-y-6 sticky top-24">
-            <h3 className="font-bold text-lg border-b pb-4">
+          <section className="bg-card border border-border rounded-2xl p-6 space-y-6 sticky top-24">
+            <h3 className="font-bold text-lg border-b border-border pb-4 font-heading">
               {detailT("job_summary")}
             </h3>
 
@@ -162,7 +149,7 @@ export function JobDetailContent({ job }: JobDetailContentProps) {
                     {t("location")}
                   </p>
                   <p className="font-semibold">
-                    {job.location?.name || t("on_site")}
+                    {job.location || t("on_site")}
                   </p>
                 </div>
               </div>
@@ -230,31 +217,24 @@ export function JobDetailContent({ job }: JobDetailContentProps) {
                       variant="outline"
                       className="font-medium hover:bg-muted"
                     >
-                      {js.skill.name}
+                      {getLocalizedValue(js.skill.name, locale)}
                     </Badge>
                   ))}
                 </div>
               </div>
             )}
 
-            <div className="flex justify-center">
-              <Button
-                size="lg"
-                onClick={() =>
-                  toast.info("Tính năng ứng tuyển đang được phát triển!")
-                }
-              >
-                <Send className="mr-2 h-4 w-4" />
-                {detailT("apply_now")}
-              </Button>
+            <div className="flex gap-3 pt-4 border-t">
+              <ApplyButton job={job} className="flex-1" />
+              <SavedJobButton jobId={job.id} />
             </div>
           </section>
 
           {/* Company Card Mini */}
-          <section className="bg-white border rounded-2xl p-6 space-y-4">
+          <section className="bg-card border border-border rounded-2xl p-6 space-y-4">
             <div className="flex items-center gap-3">
               <Building2 className="h-5 w-5 text-primary" />
-              <h4 className="font-bold">{detailT("about_company")}</h4>
+              <h4 className="font-bold font-heading">{detailT("about_company")}</h4>
             </div>
             <p className="text-sm text-muted-foreground line-clamp-3">
               {company.companyName}

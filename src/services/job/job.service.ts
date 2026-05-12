@@ -5,7 +5,6 @@ import {
   JobFilter,
   JobListResponse,
   Category,
-  Location,
   Skill,
 } from "@/features/jobs/types/job.type";
 import { cleanObject } from "@/lib/utils";
@@ -27,6 +26,24 @@ class JobService {
   async getJobById(id: string): Promise<Job> {
     return http.get<Job>(JOB_ENDPOINTS.DETAIL(id));
   }
+
+  /**
+   * Lưu hoặc hủy lưu việc làm.
+   */
+  async saveJob(id: string): Promise<{ saved: boolean }> {
+    return http.post<{ saved: boolean }>(JOB_ENDPOINTS.SAVE(id), {});
+  }
+
+  /**
+   * Kiểm tra trạng thái của người dùng đối với việc làm (đã lưu, đã ứng tuyển).
+   */
+  async getUserJobStatus(
+    id: string
+  ): Promise<{ isSaved: boolean; isApplied: boolean }> {
+    return http.get<{ isSaved: boolean; isApplied: boolean }>(
+      JOB_ENDPOINTS.USER_STATUS(id)
+    );
+  }
 }
 
 class MasterDataService {
@@ -37,12 +54,6 @@ class MasterDataService {
     return http.get<Category[]>(MASTER_ENDPOINTS.CATEGORIES);
   }
 
-  /**
-   * Lấy danh sách địa điểm.
-   */
-  async getLocations(): Promise<Location[]> {
-    return http.get<Location[]>(MASTER_ENDPOINTS.LOCATIONS);
-  }
 
   /**
    * Lấy danh sách kỹ năng.

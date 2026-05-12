@@ -90,6 +90,12 @@
     }
   },
   "common": {
+    "search": {
+      "placeholder": "Nhập chức danh, từ khóa, công ty...",
+      "locationPlaceholder": "Tất cả địa điểm",
+      "allLocations": "Tất cả địa điểm",
+      "button": "Tìm việc ngay"
+    },
     "cancel": "Hủy",
     "loading": "Đang tải...",
     "confirm": "Xác nhận",
@@ -109,6 +115,12 @@
       "translate_from": "Dịch từ {locale}",
       "copy_success": "Đã copy nội dung!",
       "translate_success": "Đã dịch nội dung!"
+    },
+    "file_upload": {
+      "upload_hint": "Kéo thả hoặc click để tải lên",
+      "remove": "Xóa file",
+      "max_size": "Dung lượng tối đa: {size}MB",
+      "format": "Định dạng hỗ trợ: {format}"
     }
   },
   "company": {
@@ -283,6 +295,32 @@
         "remote": "Từ xa"
       }
     },
+    "apply_job": {
+      "title": "Ứng tuyển cho vị trí {jobTitle}",
+      "personal_info": "Thông tin cá nhân",
+      "fullName_label": "Họ và tên",
+      "fullName_placeholder": "Nhập họ và tên của bạn",
+      "phone_label": "Số điện thoại",
+      "phone_placeholder": "Nhập số điện thoại của bạn",
+      "cover_letter_label": "Thư giới thiệu",
+      "cover_letter_placeholder": "Viết một đoạn giới thiệu ngắn về lý do bạn phù hợp với vị trí này...",
+      "cv_label": "Hồ sơ/CV",
+      "use_profile_cv": "Sử dụng CV từ hồ sơ",
+      "profile_cv_default": "CV hiện tại",
+      "no_cv_profile": "Chưa có CV trong hồ sơ",
+      "upload_new_cv": "Tải lên CV mới",
+      "format_hint": "Định dạng PDF (tối đa {size}MB)",
+      "description": "Vui lòng cung cấp thư giới thiệu và chọn CV của bạn.",
+      "cancel": "Hủy",
+      "submit": "Gửi đơn ứng tuyển",
+      "submitting": "Đang gửi...",
+      "success": "Gửi đơn ứng tuyển thành công!",
+      "error": "Gửi đơn ứng tuyển thất bại. Vui lòng thử lại.",
+      "already_applied": "Bạn đã ứng tuyển công việc này rồi.",
+      "not_candidate": "Chỉ ứng viên mới có thể ứng tuyển công việc.",
+      "login_required": "Vui lòng đăng nhập để ứng tuyển công việc này.",
+      "cv_required": "Vui lòng tải lên hoặc chọn CV để ứng tuyển."
+    },
     "search": {
       "placeholder": "Tìm kiếm tiêu đề công việc, từ khóa...",
       "submit": "Tìm kiếm"
@@ -320,7 +358,11 @@
       "about_company": "Về công ty",
       "view_company_profile": "Xem trang công ty",
       "no_description": "Thông tin đang được cập nhật...",
-      "no_requirements": "Thông tin đang được cập nhật..."
+      "no_requirements": "Thông tin đang được cập nhật...",
+      "save_job": "Lưu công việc",
+      "unsave_job": "Bỏ lưu",
+      "saved": "Đã lưu",
+      "applied": "Đã ứng tuyển"
     }
   }
 }
