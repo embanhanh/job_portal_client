@@ -69,6 +69,12 @@ export const initializeInterceptors = (instance: AxiosInstance) => {
         return Promise.reject(normalizeError(error));
       }
 
+      // Không gọi refresh ở phía Server (Node.js) vì Middleware đã đảm nhận việc này.
+      // Nếu Server Component vẫn nhận 401, tức là token (cả access lẫn refresh) thực sự hết hạn/lỗi.
+      if (typeof window === "undefined") {
+        return Promise.reject(normalizeError(error));
+      }
+
       // Đang refresh → queue request lại, chờ BE set cookie mới
       if (refreshState.isRefreshing) {
         return new Promise<void>((resolve, reject) => {
